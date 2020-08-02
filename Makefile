@@ -18,7 +18,7 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
   CATEGORY:=eSir Playground
-#  SUBMENU:=2. GameAcc
+  SUBMENU:=2. GameAcc
   TITLE:=LingTi Game Accelerator
   URL:=https://github.com/esirplayground/LingTiGameAcc
   DEPENDS:=+kmod-tun
