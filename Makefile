@@ -17,7 +17,7 @@ define Package/$(PKG_NAME)
 	SECTION:=luci
 	CATEGORY:=LuCI
 	SUBMENU:=3. Applications
-	TITLE:=LuCI support for LingTiGameAcc
+	TITLE:=LuCI support for UUGameAcc
 	PKGARCH:=all
 	DEPENDS:=+kmod-tun
 endef
