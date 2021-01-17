@@ -7,7 +7,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-UUGameAcc
-PKG_VERSION:=20201230
+PKG_VERSION:=20210117
 PKG_RELEASE:=2.7.2
 PKG_MAINTAINER:=BCYDTZ <https://github.com/BCYDTZ/luci-app-UUGameAcc>
 
