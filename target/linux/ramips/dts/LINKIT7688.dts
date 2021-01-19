@@ -12,7 +12,7 @@
 
 	memory@0 {
 		device_type = "memory";
-		reg = <0x0 0x8000000>;
+		reg = <0x0 0x4000000>;
 	};
 
 	pinctrl {
@@ -123,8 +123,6 @@
 
 	sdhci@10130000 {
 		status = "okay";
-		mediatek,cd-high;
-//		mediatek,cd-poll;
 	};
 
 	bootstrap {
