@@ -1,0 +1,50 @@
+diff --git a/mkfs.jffs2.c b/mkfs.jffs2.c
+index 6167825..0e8c7ca 100644
+--- a/mkfs.jffs2.c
++++ b/mkfs.jffs2.c
+@@ -50,6 +50,7 @@
+ #define PROGRAM_NAME "mkfs.jffs2"
+ 
+ #include <sys/types.h>
++#include <sys/sysmacros.h>
+ #include <stdio.h>
+ #include <sys/stat.h>
+ #include <unistd.h>
+diff --git a/mkfs.ubifs/devtable.c b/mkfs.ubifs/devtable.c
+index 3215f3f..9e38356 100644
+--- a/mkfs.ubifs/devtable.c
++++ b/mkfs.ubifs/devtable.c
+@@ -48,6 +48,8 @@
+ #include "hashtable/hashtable.h"
+ #include "hashtable/hashtable_itr.h"
+ 
++#include <sys/sysmacros.h>
++
+ /*
+  * The hash table which contains paths to files/directories/device nodes
+  * referred to in the device table. For example, if the device table refers
+diff --git a/mkfs.ubifs/mkfs.ubifs.c b/mkfs.ubifs/mkfs.ubifs.c
+index 83a812d..add9068 100644
+--- a/mkfs.ubifs/mkfs.ubifs.c
++++ b/mkfs.ubifs/mkfs.ubifs.c
+@@ -26,6 +26,8 @@
+ #include <crc32.h>
+ #include "common.h"
+ 
++#include <sys/sysmacros.h>
++
+ /* Size (prime number) of hash table for link counting */
+ #define HASH_TABLE_SIZE 10099
+ 
+diff --git a/ubi-utils/libubi.c b/ubi-utils/libubi.c
+index 1e08b7d..a479aae 100644
+--- a/ubi-utils/libubi.c
++++ b/ubi-utils/libubi.c
+@@ -32,6 +32,7 @@
+ #include <sys/ioctl.h>
+ #include <sys/stat.h>
+ #include <sys/types.h>
++#include <sys/sysmacros.h>
+ #include <libubi.h>
+ #include "libubi_int.h"
+ #include "common.h"
