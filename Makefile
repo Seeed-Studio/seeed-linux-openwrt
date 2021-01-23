@@ -54,11 +54,11 @@ endef
 
 define Package/$(PKG_NAME)/postinst
 #!/bin/sh
-	mkdir -p /usr/bin/uuplugin
-	chmod +x /tmp/uuplugin/uuplugin.sh
-	sh /tmp/uuplugin/uuplugin.sh
-	rm -rf /tmp/uuplugin
-	chmod +x /usr/bin/uuplugin/*
+	mkdir -p ./usr/bin/uuplugin
+	chmod +x ./tmp/uuplugin/uuplugin.sh
+	sh ./tmp/uuplugin/uuplugin.sh
+	rm -rf ./tmp/uuplugin
+	chmod +x ./usr/bin/uuplugin/*
 	/etc/init.d/uuplugin_luci enable >/dev/null 2>&1
 	chmod a+x $${IPKG_INSTROOT}/etc/init.d/uuplugin_luci >/dev/null 2>&1
 exit 0
