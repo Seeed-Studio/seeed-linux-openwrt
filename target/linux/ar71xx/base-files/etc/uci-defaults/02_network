@@ -57,6 +57,7 @@ wzr-450hp2)
 
 archer-c5 |\
 archer-c7 |\
+dw33d |\
 tl-wdr4900-v2)
 	ucidef_set_interfaces_lan_wan "eth1" "eth0"
 	ucidef_add_switch "switch0" "1" "1"
@@ -438,6 +439,7 @@ tl-wr741nd |\
 tl-wr741nd-v4 |\
 tl-wr841n-v7 |\
 tl-wr841n-v9 |\
+tl-wr841n-v11 |\
 whr-g301n |\
 whr-hp-g300n |\
 whr-hp-gn |\
