@@ -1,0 +1,45 @@
+name: Build
+
+on:
+  pull_request:
+  push:
+  repository_dispatch:
+  release:
+    types:
+      - created
+
+jobs:
+  MT76X8:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        board:
+        - 'Seeed MT7628 development board'
+    steps:
+    - name: Setup Python
+      uses: actions/setup-python@v2 
+
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: 'true'
+        fetch-depth: 0
+
+    - name: Setup Environment
+      run: |
+        sudo apt-get install git g++ make libncurses5-dev subversion libssl-dev gawk libxml-parser-perl unzip wget python xz-utils
+        cp feeds.conf.default feeds.conf
+        echo 'src-git linkit https://github.com/LynnL4/linkit-smart-7688-feed.git;mtk7628' >> feeds.conf
+        ./scripts/feeds update
+        ./scripts/feeds install -a
+
+    - name: Build
+      run: |
+        cp seeed-mt7628.config .config
+        make v=99
+    
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.board }}
+        path: bin/
