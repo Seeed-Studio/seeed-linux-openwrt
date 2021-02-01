@@ -1,7 +1,7 @@
 require("luci.util")
 
 mp = Map("lingti", translate("LingTi Game Accelerator"))
-mp.description = translate("A Paid Game Acceleration service")
+mp.description = translate("A Paid Game Acceleration service, Please use with Mobile App")
 mp:section(SimpleSection).template  = "lingti/lingti_status"
 
 s = mp:section(TypedSection, "lingti")
