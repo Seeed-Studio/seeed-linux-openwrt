@@ -47,7 +47,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./root/etc/init.d/lingti $(1)/etc/init.d
 endef
 
-define Package/coremark/postinst
+define Package/$(PKG_NAME)/postinst
 #!/bin/sh
 chmod +x $(1)/usr/bin/lingti
 chmod +x $(1)/etc/init.d/lingti
