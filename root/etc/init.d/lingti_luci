@@ -14,6 +14,7 @@ start() {
 	if [ "$enable" -eq 0 ]; then 
 	  stop
 	else
+	  /etc/init.d/lingti enable
 	  /var/bin/lingti & 2>/dev/null
 	fi
 }
@@ -22,5 +23,6 @@ stop() {
 	config_load lingti
 	local enabled
 	config_get_bool enabled lingti enabled
+	/etc/init.d/lingti disable
 	kill -9 `pgrep -f "/var/bin/lingti"` 2>/dev/null
 }
