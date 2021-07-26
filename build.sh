@@ -99,7 +99,8 @@ git cherry-pick 1854aeec4d37079690309dec3171d0864339f73a
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 
-cp ${WORKSPACE_ROOT}/configs/rpi_cm4_defconfig .config
+#cp ${WORKSPACE_ROOT}/configs/rpi_cm4_defconfig .config
+cp ${WORKSPACE_ROOT}/$OPENWRT_CONFIG_FILE .config
 make defconfig
 make download -j8
 echo -e "$(nproc) thread compile"

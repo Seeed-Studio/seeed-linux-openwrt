@@ -1,8 +1,8 @@
-name: Build Raspberry Pi 4 CM4's OpenWrt
+name: Build x86_64's OpenWrt
 
 on:
   repository_dispatch:
-    types: [openwrt, cm4]
+    types: [openwrt, x86]
   workflow_dispatch:
   schedule:
     - cron: 0 18 * * *
@@ -10,7 +10,7 @@ on:
 #    types: started
 
 env:
-  OPENWRT_CONFIG_FILE: configs/rpi_cm4_defconfig 
+  OPENWRT_CONFIG_FILE: configs/x86_defconfig 
   IPV6MOD_IN_FIRMWARE: true
   KMODS_IN_FIRMWARE: true
   UPLOAD_RCLONE: true
@@ -117,9 +117,9 @@ jobs:
           echo "- packages-server.zip" >> /tmp/upload-rule.txt
           echo "- *.buildinfo" >> /tmp/upload-rule.txt
           echo "+ openwrt-keyring*" >> /tmp/upload-rule.txt
-          rclone mkdir $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/rpi
+          rclone mkdir $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/x86
           #rclone copy bin $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/rpi --filter-from   /tmp/upload-rule.txt
-          rclone copy bin/targets $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/rpi 
+          rclone copy bin/targets $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/x86
           echo "::warning file=Firmware-OneDrive::Download Link: https://1drv.ms/u/s!AqG2uRmVUhlSh0NHMLMmQKLyASvi?e=mup3cd"
 
       - name: Delete Artifacts
