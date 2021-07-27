@@ -1,0 +1,14 @@
+<%#
+ Copyright 2018 Dave Conway-Jones
+ Licensed to the public under the Apache License 2.0.
+-%>
+
+<%+header%>
+<h2 name="content"><%:Node-RED Log%>
+<div style="float:right; padding-bottom:5px;">
+<input class="cbi-button cbi-button-apply" type="submit" value="Node-RED" onClick="window.open(window.location.protocol+'//'+window.location.host+':1880','nr');">
+</div></h2>
+<div id="content_syslog">
+<textarea style="font-size: 12px;" readonly="readonly" wrap="off" rows="<%=nrlog:cmatch("\n")+2%>" id="syslog"><%=nrlog:pcdata()%></textarea>
+</div>
+<%+footer%>
