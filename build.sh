@@ -65,9 +65,17 @@ git subtree add --prefix=package/lean/luci-app-dockerman lisaac-luci-app-dockerm
 
 echo "add lisaac's  luci-lib-docker"
 git  remote add -f luci-lib-docker https://github.com/lisaac/luci-lib-docker
-git checkout  remotes/luci-lib-docker/master -b lisaac-luci-lib-docker
+git checkout  remotes/luci-lib-docker/master -b community-luci-lib-docker
 git checkout openwrt-21.02
-git subtree add --prefix=package/lean/luci-lib-docker lisaac-luci-lib-docker
+git subtree add --prefix=package/lean/luci-lib-docker community-luci-lib-docker
+
+
+echo "add gztingting's luci-app-fileassistant"
+git  remote add -f luci-lib-docker https://github.com/lisaac/luci-lib-docker
+git  remote add -f luci-app-fileassistant https://github.com/gztingting/luci-app-fileassistant-test
+git checkout  remotes/luci-app-fileassistant/master -b community-luci-app-fileassistant
+git checkout openwrt-21.02
+git subtree add --prefix=package/lean/luci-app-fileassistant community-luci-app-fileassistant
 
 
 echo "modify feeds.conf.default"
@@ -75,6 +83,11 @@ delete_line  "${OPENWRT_ROOT}/feeds.conf.default"   "src-git luci https://git.op
 echo -e "src-git luci https://github.com/coolsnowwolf/luci" >> ${OPENWRT_ROOT}/feeds.conf.default
 git add feeds.conf.default
 git commit -m "feeds: use coolsnowwolf's luci default"
+
+echo -e "src-git infinityfreedom https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom.git" >> ${OPENWRT_ROOT}/feeds.conf.default
+git add feeds.conf.default
+git commit -m "feeds: use infinityfreedom's luci theme"
+
 
 echo  "enable lan78xx and usb net drivers"
 echo -e "CONFIG_USB_LAN78XX=y\nCONFIG_USB_NET_DRIVERS=y" >> $OPENWRT_ROOT/target/linux/bcm27xx/bcm2711/config-5.4
