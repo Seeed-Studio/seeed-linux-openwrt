@@ -436,7 +436,6 @@ CONFIG_VERSION_PRODUCT=""
 CONFIG_VERSION_HWREV=""
 CONFIG_VERSION_FILENAMES=y
 CONFIG_VERSION_CODE_FILENAMES=y
-
 CONFIG_PER_FEED_REPO=y
 CONFIG_FEED_packages=y
 CONFIG_FEED_routing=y
@@ -4818,7 +4817,7 @@ CONFIG_PACKAGE_luci-app-zerotier=y
 #
 # 4. Themes
 #
-# CONFIG_PACKAGE_luci-theme-argon is not set
+CONFIG_PACKAGE_luci-theme-argon=y
 # CONFIG_PACKAGE_luci-theme-bootstrap is not set
 CONFIG_PACKAGE_luci-theme-infinityfreedom=y
 CONFIG_PACKAGE_luci-theme-material=y
