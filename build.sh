@@ -21,9 +21,6 @@ git clone /tmp/lede /tmp/lede-upx
 
 cd /tmp/lede-lean
 git-filter-repo --path package/lean
-sed -i 's#PKG_SOURCE_URL:=http://www.cryptopp.com/#PKG_SOURCE_URL:=https://telkomuniversity.dl.sourceforge.net/project/cryptopp/cryptopp/5.6.4/#g'   package/lean/libcryptopp/Makefile
-git add package/lean/libcryptopp/Makefile
-git commit -m "package: lean: change the cryptopp download dir"
 
 cd /tmp/lede-ucl/
 git-filter-repo --path tools/ucl/
