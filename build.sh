@@ -104,7 +104,7 @@ git commit -m "enable cm4 wifi default"
 #mage build: fix opkg install step for large package selection 
 git cherry-pick 1854aeec4d37079690309dec3171d0864339f73a 
 #ln -s  /home/baozhu/storage/openwrt/dl/ .
-#ln -s  ${WORKSPACE_ROOT}/files  .
+cp -rf  ${WORKSPACE_ROOT}/files  .
 #ln -s  ${WORKSPACE_ROOT}/build_dir  .
 #ln -s  ${WORKSPACE_ROOT}/staging_dir  .
 
