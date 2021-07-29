@@ -2,6 +2,10 @@
 
 . scripts/file-editor.sh
 
+
+echo "install  git-filter-repo"
+pip3 install  git-filter-repo
+
 echo "download code ..."
 WORKSPACE_ROOT=`pwd`
 OPENWRT_MAINLINE="https://github.com/openwrt/openwrt"
@@ -9,25 +13,36 @@ LEAN_PACKAGE="https://github.com/coolsnowwolf/lede"
 git clone ${OPENWRT_MAINLINE} openwrt
 cd openwrt
 OPENWRT_ROOT=`pwd`
-git remote add -f lean ${LEAN_PACKAGE}
-git checkout remotes/lean/master -b lean-master
 
-echo "merge lede/package/lean to openwrt/package/lean"
-git subtree split -P package/lean/ -b lean-package 
+git clone ${LEAN_PACKAGE} /tmp/lede  --bare
+git clone /tmp/lede /tmp/lede-lean
+git clone /tmp/lede /tmp/lede-ucl
+git clone /tmp/lede /tmp/lede-upx
+
+cd /tmp/lede-lean
+git-filter-repo --path package/lean
+
+cd /tmp/lede-ucl/
+git-filter-repo --path tools/ucl/
+
+cd /tmp/lede-upx/
+git-filter-repo --path tools/upx/
+
+cd ${OPENWRT_ROOT}
 git checkout remotes/origin/openwrt-21.02 -b openwrt-21.02
-git subtree add --prefix=package/lean lean-package 
+git remote add -f lean /tmp/lede-lean
+git remote add -f ucl /tmp/lede-ucl
+git remote add -f upx /tmp/lede-upx 
 
-echo "merge lede/tools/ucl to openwrt/tools/ucl"
-git checkout lean-master
-git subtree split -P tools/ucl -b openwrt-tools-ucl 
-git checkout openwrt-21.02
-git subtree add --prefix=tools/ucl openwrt-tools-ucl 
+git merge lean/master --allow-unrelated-histories --commit -m "merge: coolsnowwolf's lean dir"
+git merge ucl/master --allow-unrelated-histories --commit -m "merge: coolsnowwolf's ucl dir"
+git merge upx/master --allow-unrelated-histories --commit -m "merge: coolsnowwolf's ucl dir"
 
-echo "merge lede/tools/upx to openwrt/tools/upx"
-git checkout lean-master
-git subtree split -P tools/upx -b openwrt-tools-upx
-git checkout openwrt-21.02
-git subtree add --prefix=tools/upx openwrt-tools-upx 
+echo "clean dir"
+rm  -rf /tmp/lede
+rm  -rf /tmp/lede-lean
+rm  -rf /tmp/lede-ucl
+rm  -rf /tmp/lede-upx
 
 echo "modify openwrt tools/Makefile"
 insert_line "${OPENWRT_ROOT}/tools/Makefile" "tools-y += autoconf autoconf-archive automake bc bison cmake dosfstools" "tools-y += ucl upx"
