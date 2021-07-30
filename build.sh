@@ -119,7 +119,14 @@ git commit -m "enable cm4 wifi default"
 #mage build: fix opkg install step for large package selection 
 git cherry-pick 1854aeec4d37079690309dec3171d0864339f73a 
 #ln -s  /home/baozhu/storage/openwrt/dl/ .
-cp -rf  ${WORKSPACE_ROOT}/files  .
+if [ "${OPENWRT_CONFIG_FILE}" = "configs/x86_defconfig" ] ; then
+	cp -rf  ${WORKSPACE_ROOT}/files/x86  files
+	echo "use x86 default custom rootfs config files"
+fi
+if [ "${OPENWRT_CONFIG_FILE}" = "configs/rpi_cm4_defconfig" ] ; then
+	cp -rf  ${WORKSPACE_ROOT}/files/rpi  files
+	echo "use rpi default custom rootfs config files"
+fi
 #ln -s  ${WORKSPACE_ROOT}/build_dir  .
 #ln -s  ${WORKSPACE_ROOT}/staging_dir  .
 
