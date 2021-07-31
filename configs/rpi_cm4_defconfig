@@ -5361,7 +5361,7 @@ CONFIG_PACKAGE_rclone-webui-react=y
 # Download Manager
 #
 CONFIG_PACKAGE_ariang=y
-CONFIG_PACKAGE_ariang-nginx=y
+# CONFIG_PACKAGE_ariang-nginx is not set
 # CONFIG_PACKAGE_leech is not set
 CONFIG_PACKAGE_webui-aria2=y
 # end of Download Manager
