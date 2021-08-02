@@ -17,14 +17,14 @@ while [ ! -z "$1" ] ; do
 	--deconfig)
 		cd ${OPENWRTROOT}
 		if [ "${OPENWRT_CONFIG_FILE}" = "configs/x86_defconfig" ] ; then
-			cp -rf  ${WORKSPACE_ROOT}/files/x86  files
+			cp -rf  ../files/x86  files
 			echo "use x86 default custom rootfs config files"
 		fi
 		if [ "${OPENWRT_CONFIG_FILE}" = "configs/rpi_cm4_defconfig" ] ; then
-			cp -rf  ${WORKSPACE_ROOT}/files/rpi  files
+			cp -rf  ../files/rpi  files
 			echo "use rpi default custom rootfs config files"
 		fi
-		cp ${WORKSPACE_ROOT}/$OPENWRT_CONFIG_FILE .config
+		cp ../$OPENWRT_CONFIG_FILE .config
 		make defconfig
 		;;
 	--download)
