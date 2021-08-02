@@ -10,12 +10,12 @@ while [ ! -z "$1" ] ; do
 		source_update
 		;;
 	--feeds)
-		cd ${OPENWRT_ROOT}
+		cd ${OPENWRTROOT}
 		./scripts/feeds update -a
 		./scripts/feeds install -a
 		;;
 	--deconfig)
-		cd ${OPENWRT_ROOT}
+		cd ${OPENWRTROOT}
 		if [ "${OPENWRT_CONFIG_FILE}" = "configs/x86_defconfig" ] ; then
 			cp -rf  ${WORKSPACE_ROOT}/files/x86  files
 			echo "use x86 default custom rootfs config files"
@@ -28,27 +28,28 @@ while [ ! -z "$1" ] ; do
 		make defconfig
 		;;
 	--download)
-		cd ${OPENWRT_ROOT}
+		cd ${OPENWRTROOT}
 		make download -j8 || make download -j8
 		;;
 	--tools-compile)
-		cd ${OPENWRT_ROOT}
+		cd ${OPENWRTROOT}
 		make tools/compile -j$(nproc) || make tools/compile -j1 V=s
 		make toolchain/compile -j$(nproc) || make toolchain/compile -j1 V=s
 		;;
 	--target-compile)
-		cd ${OPENWRT_ROOT}
+		cd ${OPENWRTROOT}
 		make target/compile -j$(nproc) || make target/compile -j1 V=s IGNORE_ERRORS=1
 		;;
 	--package-compile)
-		cd ${OPENWRT_ROOT}
+		cd ${OPENWRTROOT}
 		make package/compile -j$(nproc) || make package/compile -j1 V=s IGNORE_ERRORS=1
 		;;
 	--package-install)
-		cd ${OPENWRT_ROOT}
+		cd ${OPENWRTROOT}
 		make package/install -j$(nproc) || make package/install -j1 V=s IGNORE_ERRORS=1
+		;;
 	--target-install)
-		cd ${OPENWRT_ROOT}
+		cd ${OPENWRTROOT}
 		make target/install -j$(nproc) || make target/install -j1 V=s IGNORE_ERRORS=1
 		make checksum
 		;;
