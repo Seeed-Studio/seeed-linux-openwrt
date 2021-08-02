@@ -38,19 +38,19 @@ while [ ! -z "$1" ] ; do
 		;;
 	--target-compile)
 		cd ${OPENWRTROOT}
-		make target/compile -j$(nproc) || make target/compile -j1 V=s IGNORE_ERRORS=1
+		make target/compile -j$(nproc) || make target/compile -j1 V=s 
 		;;
 	--package-compile)
 		cd ${OPENWRTROOT}
-		make package/compile -j$(nproc) || make package/compile -j1 V=s IGNORE_ERRORS=1
+		make package/compile -j$(nproc) || make package/compile -j1 V=s 
 		;;
 	--package-install)
 		cd ${OPENWRTROOT}
-		make package/install -j$(nproc) || make package/install -j1 V=s IGNORE_ERRORS=1
+		make package/install -j$(nproc) || make package/install -j1 V=s 
 		;;
 	--target-install)
 		cd ${OPENWRTROOT}
-		make target/install -j$(nproc) || make target/install -j1 V=s IGNORE_ERRORS=1
+		make target/install -j$(nproc) || make target/install -j1 V=s
 		make checksum
 		;;
 	esac
