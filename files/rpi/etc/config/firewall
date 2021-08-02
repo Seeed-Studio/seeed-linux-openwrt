@@ -18,7 +18,7 @@ config zone
 	list network 'wan'
 	list network 'wan6'
 	option output 'ACCEPT'
-	option forward 'REJECT'
+	option forward 'ACCEPT'
 	option masq '1'
 	option mtu_fix '1'
 	option input 'ACCEPT'
