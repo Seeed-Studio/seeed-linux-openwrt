@@ -75,6 +75,9 @@ source_update () {
 
 
 	echo "add lisaac's  luci-lib-docker"
+	rm -rf ${OPENWRT_ROOT}/package/lean/luci-lib-docker
+	git add package/lean/luci-lib-docker
+	git commit -m "remove lean's luci-lib-docker"
 	git  remote add -f luci-lib-docker https://github.com/lisaac/luci-lib-docker
 	git checkout  remotes/luci-lib-docker/master -b community-luci-lib-docker
 	git checkout openwrt-21.02
