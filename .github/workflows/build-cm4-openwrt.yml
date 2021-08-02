@@ -41,33 +41,77 @@ jobs:
           git config --global user.name "I'm a Code Bot"
           git config --global user.email "baozhu.zuo@gmail.com"
           git checkout magic
+          pip3 install  git-filter-repo
 
-      - name: Build Source Code
-        id: generate
+      - name: Source Code Update
+        id: source-op
         run: |
           df -hT $PWD
-          ./build.sh
+          ./build.sh --source-op
           cd openwrt
           echo "OPENWRTROOT=$PWD" >> $GITHUB_ENV
           echo "::set-output name=OPENWRTROOT::$(echo $PWD)"
-          echo "::set-output name=GENERATE_STATUS::success"
-          mkdir -p .github/workflows
-          cp ../.github/workflows/*  .github/workflows/
-          git add --all
-          git commit -m "Github Action: copy workflows from magic branch"
+          echo "::set-output name=SOURCR_UPDATE::success"
 
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: "openwrt-21.02"
-          directory: "openwrt"
-          repository: "Seeed-Studio/seeed-linux-openwrt"
-          force: true
+      - name: Feed Update
+        if: steps.source-op.outputs.SOURCR_UPDATE == 'success'
+        id: feeds
+        run: |
+          ./build.sh --feeds
+          echo "::set-output name=FEED_UPDATE::success"
+
+      - name: Openwrt Deconfig
+        if: steps.feeds.outputs.FEED_UPDATE == 'success'
+        id: deconfig
+        run: |
+          ./build.sh --deconfig
+          echo "::set-output name=DEFCONFIG::success"
+
+      - name: Openwrt Package Download
+        if: steps.deconfig.outputs.DEFCONFIG == 'success'
+        id: download
+        run: |
+          ./build.sh --download
+          echo "::set-output name=DOWNLOAD::success"
+
+      - name: Openwrt Tools Compile
+        if: steps.download.outputs.DOWNLOAD == 'success'
+        id: tools-compile
+        run: |
+          ./build.sh --tools-compile
+          echo "::set-output name=TOOLS_COMPILE::success"
+
+      - name: Openwrt Target Compile
+        if: steps.tools-compile.outputs.TOOLS_COMPILE == 'success'
+        id: target-compile
+        run: |
+          ./build.sh --target-compile
+          echo "::set-output name=TARGET_COMPILE::success"
+
+      - name: Openwrt package Compile
+        if: steps.target-compile.outputs.TARGET_COMPILE == 'success'
+        id: package-compile
+        run: |
+          ./build.sh --package-compile
+          echo "::set-output name=PACKAGE_COMPILE::success"
+
+      - name: Openwrt package Install
+        if: steps.package-compile.outputs.PACKAGE_COMPILE == 'success'
+        id: package-install
+        run: |
+          ./build.sh --package-install
+          echo "::set-output name=PACKAGE_INSTALL::success"
+
+      - name: Openwrt Target Install
+        if: steps.package-install.outputs.PACKAGE_INSTALL == 'success'
+        id: target-install
+        run: |
+          ./build.sh --target-install
+          echo "::set-output name=TARGET_INSTALL::success"
 
       - name: Upload Bin Folder
         uses: actions/upload-artifact@main
-        if: steps.generate.outputs.GENERATE_STATUS == 'success'
+        if: steps.target-install.outputs.TARGET_INSTALL == 'success'
         with:
           name: bin-archive
           path: openwrt/bin
