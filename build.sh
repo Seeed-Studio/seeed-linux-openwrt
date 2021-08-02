@@ -140,10 +140,10 @@ make defconfig
 make download -j8 || make download -j8
 echo -e "$(nproc) thread compile"
 
-make tools/upx/compile -j$(nproc) || make tools/upx/compile V=s
-make tools/compile -j$(nproc) || make tools/compile -j1 V=s
-make toolchain/compile -j$(nproc) || make toolchain/compile -j1 V=s
-make target/compile -j$(nproc) || make target/compile -j1 V=s IGNORE_ERRORS=1
+# make tools/upx/compile -j$(nproc) || make tools/upx/compile V=s
+# make tools/compile -j$(nproc) || make tools/compile -j1 V=s
+# make toolchain/compile -j$(nproc) || make toolchain/compile -j1 V=s
+# make target/compile -j$(nproc) || make target/compile -j1 V=s IGNORE_ERRORS=1
 make -j $(nproc) || make V=s
 
 
