@@ -115,6 +115,7 @@ jobs:
         id: generate
         run: |
           echo "::set-output name=GENERATE_STATUS::success"
+          cd openwrt
           mkdir -p .github/workflows
           cp ../.github/workflows/*  .github/workflows/
           git add --all
