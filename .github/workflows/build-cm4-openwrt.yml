@@ -21,8 +21,8 @@ jobs:
     runs-on: ubuntu-20.04
 
     outputs:
-      OPENWRTROOT: ${{ steps.generate.outputs.OPENWRTROOT }}
-      GENERATE_STATUS: ${{ steps.generate.outputs.GENERATE_STATUS }}
+      OPENWRTROOT: ${{ steps.source-op.outputs.OPENWRTROOT }}
+      GENERATE_STATUS: ${{ steps.target-install.outputs.GENERATE_STATUS }}
 
     steps:
       - name: Checkout
@@ -108,6 +108,7 @@ jobs:
         run: |
           ./build.sh --target-install
           echo "::set-output name=TARGET_INSTALL::success"
+          echo "::set-output name=GENERATE_STATUS::success"
 
       - name: Upload Bin Folder
         uses: actions/upload-artifact@main
