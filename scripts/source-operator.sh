@@ -103,7 +103,7 @@ source_update () {
 	git commit -m "feeds: use infinityfreedom's luci theme"
 	
 	echo "add latest lan78xx driver"
-	cp ../atches/961-drivers-net-lan78xx-dervers-update-to-lan78xx.napi20.patch  $OPENWRT_ROOT/target/linux/bcm27xx/patches-5.4/
+	cp ../patches/961-drivers-net-lan78xx-dervers-update-to-lan78xx.napi20.patch  $OPENWRT_ROOT/target/linux/bcm27xx/patches-5.4/
 	git add target/linux/bcm27xx/patches-5.4/961-drivers-net-lan78xx-dervers-update-to-lan78xx.napi20.patch
 	git commit -m "add latest lan78xx driver patches"
 
