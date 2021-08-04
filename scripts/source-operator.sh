@@ -101,7 +101,11 @@ source_update () {
 	echo -e "src-git infinityfreedom https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom.git" >> ${OPENWRT_ROOT}/feeds.conf.default
 	git add feeds.conf.default
 	git commit -m "feeds: use infinityfreedom's luci theme"
-
+	
+	echo "add latest lan78xx driver"
+	cp ../atches/961-drivers-net-lan78xx-dervers-update-to-lan78xx.napi20.patch  $OPENWRT_ROOT/target/linux/bcm27xx/patches-5.4/
+	git add target/linux/bcm27xx/patches-5.4/961-drivers-net-lan78xx-dervers-update-to-lan78xx.napi20.patch
+	git commit -m "add latest lan78xx driver patches"
 
 	echo  "enable lan78xx and usb net drivers"
 	echo -e "CONFIG_USB_LAN78XX=y\nCONFIG_USB_NET_DRIVERS=y" >> $OPENWRT_ROOT/target/linux/bcm27xx/bcm2711/config-5.4
@@ -119,3 +123,4 @@ source_update () {
 	git cherry-pick 1854aeec4d37079690309dec3171d0864339f73a 
 
 }
+
