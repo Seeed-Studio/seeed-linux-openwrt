@@ -2,7 +2,7 @@
 config core 'main'
 	option resourcebase '/luci-static/resources'
 	option mediaurlbase '/luci-static/infinityfreedom'
-	option lang en
+	option lang 'en'
 
 config extern 'flash_keep'
 	option uci '/etc/config/'
