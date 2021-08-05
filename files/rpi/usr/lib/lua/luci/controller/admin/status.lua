@@ -32,6 +32,7 @@ function index()
 
 	entry({"admin", "status", "realtime", "connections"}, template("admin_status/connections"), _("Connections"), 4).leaf = true
 	entry({"admin", "status", "realtime", "connections_status"}, call("action_connections")).leaf = true
+	entry({"admin", "system", "fileassistant"}, template("admin_system/fileassistant"), _("fileassistant"), 97)
 	entry({"admin", "system", "Adguard-Home"}, template("admin_system/Adguard-Home"), _("Adguard Home"), 98)
 	entry({"admin", "system", "home-assistant"}, template("admin_system/home-assistant"), _("home-assistant"), 99)
 
