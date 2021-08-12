@@ -1,0 +1,115 @@
+name: Auto-fetch OpenWrt packages
+
+on:
+  repository_dispatch:
+    types: [openwrt]
+  workflow_dispatch:
+  schedule:
+    - cron: 0 16 * * 1,2,3,4,5
+#  watch:
+#    types: started
+
+env:
+  IPV6MOD_IN_FIRMWARE: true
+  KMODS_IN_FIRMWARE: true
+  UPLOAD_RCLONE: true
+  TZ: Asia/Shanghai
+
+jobs:
+  Build:
+    runs-on: ubuntu-20.04
+
+    outputs:
+      OPENWRTROOT: ${{ steps.source-op.outputs.OPENWRTROOT }}
+      GENERATE_STATUS: ${{ steps.generate.outputs.GENERATE_STATUS }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Initialization Environment
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+          sudo -E apt-get -qq update
+          sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-1804) tree
+          sudo -E apt-get -qq autoremove --purge
+          sudo -E apt-get -qq clean
+          sudo ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+          git config --global user.name "I'm a Code Bot"
+          git config --global user.email "baozhu.zuo@gmail.com"
+          git checkout magic
+          pip3 install  git-filter-repo
+
+      - name: Package Update
+        id: package-op
+        run: |
+          df -hT $PWD
+          ./build.sh --package-op
+
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: "packages"
+          directory: "/tmp/packages"
+          repository: "Seeed-Studio/seeed-linux-openwrt"
+          force: true
+
+
+  Upload:
+    needs: [Build]
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Restore Variables
+        run: |
+          echo "OPENWRTROOT=$(echo '${{needs.Build.outputs.OPENWRTROOT}}')" >> $GITHUB_ENV
+          echo "PLATFORM=$(echo '${{needs.Build.outputs.PLATFORM}}')" >> $GITHUB_ENV
+          echo "TARGET=$(echo '${{needs.Build.outputs.TARGET}}')" >> $GITHUB_ENV
+          echo "SUBTARGET=$(echo '${{needs.Build.outputs.SUBTARGET}}')" >> $GITHUB_ENV
+          echo "FIRMWARE=$(echo '${{needs.Build.outputs.FIRMWARE}}')" >> $GITHUB_ENV
+          echo "GENERATE_STATUS=$(echo '${{needs.Build.outputs.GENERATE_STATUS}}')" >> $GITHUB_ENV
+
+      - name: Download Bin Folder
+        uses: actions/download-artifact@v2
+        if: env.GENERATE_STATUS == 'success'
+        with:
+          name: bin-archive
+          path: openwrt/bin
+
+
+      - name: Rclone Upload
+        env:
+          RCLONE_PACKAGE: ${{ secrets.ONEDRIVE_NAME }}
+        if: env.GENERATE_STATUS == 'success' && env.UPLOAD_RCLONE == 'true' && env.RCLONE_PACKAGE != ''
+        run: |
+          cd $OPENWRTROOT
+          ls 
+          curl https://rclone.org/install.sh | sudo bash
+          mkdir -p ~/.config/rclone/
+          cat << EOF > /tmp/rclone.de
+          ${{ secrets.ONEDRIVE_CONF }}
+          EOF
+          base64  -d  /tmp/rclone.de > ~/.config/rclone/rclone.conf
+          echo "# Rclone Packages Upload Rule" >> /tmp/upload-rule.txt
+          echo "- openwrt*" >> /tmp/upload-rule.txt
+          echo "- sha256sums" >> /tmp/upload-rule.txt
+          echo "- packages-server.zip" >> /tmp/upload-rule.txt
+          echo "- *.buildinfo" >> /tmp/upload-rule.txt
+          echo "+ openwrt-keyring*" >> /tmp/upload-rule.txt
+          rclone mkdir $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/x86
+          #rclone copy bin $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/rpi --filter-from   /tmp/upload-rule.txt
+          rclone copy bin/targets $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/x86
+          echo "::warning file=Firmware-OneDrive::Download Link: https://1drv.ms/u/s!AqG2uRmVUhlSh0NHMLMmQKLyASvi?e=mup3cd"
+
+      - name: Delete Artifacts
+        uses: geekyeggo/delete-artifact@v1
+        with:
+          name: |
+            bin-archive
