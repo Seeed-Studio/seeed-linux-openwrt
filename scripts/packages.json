@@ -15,7 +15,7 @@
             "name": "openwrt-bypass",
             "author": "kiddin9",
             "url": "https://github.com/kiddin9/openwrt-bypass",
-            "branch": "master",
+            "branch": "main",
             "items": [
                "*"
             ]
