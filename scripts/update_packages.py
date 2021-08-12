@@ -71,9 +71,10 @@ def main():
             name = package['name']
             author = package['author']
             path = "{}/{}".format(author,name)
+            package_origin = "origin-{}-{}".format(author, name)
+            package_branch = "branch-{}-{}".format(author, name)
             url = package['url']
             branch = package['branch']
-            print("Merge {} from {}.".format(name, url))
 
             try:
                 if os.path.exists("{}".format(work_path(path))):
@@ -94,19 +95,19 @@ def main():
                     filter_path += " --path {}".format(item)
             
             if(filter_path == "*"):
-                print("herer")
+               
                 os.chdir("{}".format(work_path(format(repo_branch))))
-                os.system("git remote add -f {} {}".format(name, work_path(path)))
-                os.system("git checkout remotes/{0}/{1} -b tmp-{0}".format(name, branch))
+                os.system("git remote add -f {} {}".format(package_origin, work_path(path)))
+                os.system("git checkout remotes/{}/{} -b {}".format(package_origin, branch, package_branch))
                 os.system("git checkout {}".format(repo_branch))
-                os.system("git subtree add --prefix={0}/{1} tmp-{1}".format(author,name))
+                os.system("git subtree add --prefix={}/{} {}".format(author,name, package_branch))
 
             elif(filter_path != ""):
                 os.chdir("{}".format(work_path(path)))
                 os.system("git-filter-repo {}  --force".format(filter_path))
                 os.chdir("{}".format(work_path(repo_branch)))
-                os.system("git remote add -f {} {}".format(name, work_path(path)))
-                os.system("git merge {}/{} --allow-unrelated-histories --commit -m \"merge: {}'s {}\"".format(name, branch, author, name))
+                os.system("git remote add -f {} {}".format(package_origin, work_path(path)))
+                os.system("git merge {}/{} --allow-unrelated-histories --commit -m \"merge: {}'s {}\"".format(package_origin, branch, author, name))
             
                 os.chdir("{}".format(work_path(format(repo_branch))))
                 os.mkdir(author)
@@ -128,7 +129,7 @@ def main():
         os.chdir(packages_path)
         os.system("git remote set-url origin {}".format(repo_url))
 
-        shutil.rmtree("{}".format(tmp_path), onerror=readonly_handler)
+        #shutil.rmtree("{}".format(tmp_path), onerror=readonly_handler)
 
 
 if __name__ == '__main__':
