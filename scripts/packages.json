@@ -1,0 +1,189 @@
+{
+    "repo": "https://github.com/Seeed-Studio/seeed-linux-openwrt",
+    "branch": "packages",
+    "packages": [
+        {
+            "name": "luci-app-UUGameAcc",
+            "author": "BCYDTZ",
+            "url": "https://github.com/BCYDTZ/luci-app-UUGameAcc",
+            "branch": "master",
+            "items": [
+               "*"
+            ]
+        },
+        {
+            "name": "openwrt-bypass",
+            "author": "kiddin9",
+            "url": "https://github.com/kiddin9/openwrt-bypass",
+            "branch": "master",
+            "items": [
+               "*"
+            ]
+        },
+        {
+            "name": "luci-app-LingTiGameAcc",
+            "author": "esirplayground",
+            "url": "https://github.com/esirplayground/luci-app-LingTiGameAcc",
+            "branch": "master",
+            "items": [
+               "*"
+            ]
+        },
+        {
+            "name": "LingTiGameAcc",
+            "author": "esirplayground",
+            "url": "https://github.com/esirplayground/LingTiGameAcc",
+            "branch": "master",
+            "items": [
+               "*"
+            ]
+        },
+        {
+            "name": "luci-app-fileassistant",
+            "author": "gztingting",
+            "url": "/home/lht/workplace/openwrt/work/luci-app-fileassistant-test",
+            "branch": "master",
+            "items": [
+               "*"
+            ]
+        },
+        {
+            "name": "luci-theme-argon",
+            "author": "jerrykuku",
+            "url": "https://github.com/jerrykuku/luci-theme-argon",
+            "branch": "master",
+            "items": [
+                "*"
+            ]
+        },
+        {
+            "name": "luci-app-argon-config",
+            "author": "jerrykuku",
+            "url": "https://github.com/jerrykuku/luci-theme-argon",
+            "branch": "master",
+            "items": [
+                "*"
+            ]
+        },
+        {
+            "name": "packages",
+            "author": "seeed",
+            "url": "https://github.com/Seeed-Studio/seeed-linux-openwrt",
+            "branch": "magic",
+            "items": [
+                "package"
+            ]
+        },
+        {
+            "name": "packages",
+            "author": "lean",
+            "url": "https://github.com/coolsnowwolf/lede",
+            "branch": "master",
+            "items": [
+                "LICENSES",
+                "package/lean/UnblockNeteaseMusic-Go",
+                "package/lean/UnblockNeteaseMusic",
+                "package/lean/adbyby",
+                "package/lean/amule",
+                "package/lean/ntileech",
+                "package/lean/automount",
+                "package/lean/autosamba",
+                "package/lean/baidupcs-web",
+                "package/lean/csstidy",
+                "package/lean/ddns-scripts_aliyun",
+                "package/lean/ddns-scripts_dnspod",
+                "package/lean/default-settings",
+                "package/lean/dns2socks",
+                "package/lean/dnsforwarder",
+                "package/lean/dnsproxy",
+                "package/lean/dsmboot",
+                "package/lean/gmediarender",
+                "package/lean/ipt2socks",
+                "package/lean/ipv6-helper",
+                "package/lean/k3-brcmfmac4366c-firmware",
+                "package/lean/k3screenctrl",
+                "package/lean/libcryptopp",
+                "package/lean/mentohust",
+                "package/lean/microsocks",
+                "package/lean/mt",
+                "package/lean/mtk-eip93",
+                "package/lean/n2n_v2",
+                "package/lean/npc",
+                "package/lean/ntfs3-mount",
+                "package/lean/ntfs3",
+                "package/lean/openwrt-fullconenat",
+                "package/lean/pdnsd-alt",
+                "package/lean/polarssl",
+                "package/lean/ps3netsrv",
+                "package/lean/qBittorrent-static",
+                "package/lean/qBittorrent",
+                "package/lean/qtbase",
+                "package/lean/qttools",
+                "package/lean/r8125",
+                "package/lean/r8152",
+                "package/lean/rblibtorrent",
+                "package/lean/rclone-ng",
+                "package/lean/rclone-webui-react",
+                "package/lean/rclone",
+                "package/lean/shortcut-fe",
+                "package/lean/simple-obfs",
+                "package/lean/srelay",
+                "package/lean/tcpping",
+                "package/lean/trojan",
+                "package/lean/uugamebooster",
+                "package/lean/verysync",
+                "package/lean/vlmcsd",
+                "package/lean/vsftpd-alt",
+                "package/lean/wol",
+                "package/lean/wxbase",
+                "package/lean/luci-app-accesscontrol",
+                "package/lean/luci-app-adbyby-plus",
+                "package/lean/luci-app-amule",
+                "package/lean/luci-app-arpbind",
+                "package/lean/luci-app-autoreboot",
+                "package/lean/luci-app-baidupcs-web",
+                "package/lean/luci-app-cifs-mount",
+                "package/lean/luci-app-cifsd",
+                "package/lean/luci-app-cpufreq",
+                "package/lean/luci-app-dnsforwarder",
+                "package/lean/luci-app-easymesh",
+                "package/lean/luci-app-familycloud",
+                "package/lean/luci-app-fileassistant",
+                "package/lean/luci-app-filetransfer",
+                "package/lean/luci-app-guest-wifi",
+                "package/lean/luci-app-haproxy-tcp",
+                "package/lean/luci-app-ipsec-vpnd",
+                "package/lean/luci-app-jd-dailybonus",
+                "package/lean/luci-app-kodexplorer",
+                "package/lean/luci-app-mwan3helper",
+                "package/lean/luci-app-n2n_v2",
+                "package/lean/luci-app-netdata",
+                "package/lean/luci-app-nfs",
+                "package/lean/luci-app-nps",
+                "package/lean/luci-app-pppoe-relay",
+                "package/lean/luci-app-pptp-server",
+                "package/lean/luci-app-ps3netsrv",
+                "package/lean/luci-app-qbittorrent",
+                "package/lean/luci-app-ramfree",
+                "package/lean/luci-app-rclone",
+                "package/lean/luci-app-softethervpn",
+                "package/lean/luci-app-ssrserver-python",
+                "package/lean/luci-app-syncdial",
+                "package/lean/luci-app-turboacc",
+                "package/lean/luci-app-unblockmusic",
+                "package/lean/luci-app-usb-printer",
+                "package/lean/luci-app-uugamebooster",
+                "package/lean/luci-app-v2ray-server",
+                "package/lean/luci-app-verysync",
+                "package/lean/luci-app-vlmcsd",
+                "package/lean/luci-app-vsftpd",
+                "package/lean/luci-app-webadmin",
+                "package/lean/luci-app-wrtbwmon",
+                "package/lean/luci-app-xlnetacc",
+                "package/lean/luci-lib-docker",
+                "package/lean/luci-lib-fs",
+                "package/lean/luci-proto-bonding"
+            ]
+        }
+    ]
+}
