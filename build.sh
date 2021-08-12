@@ -6,6 +6,9 @@
 # parse commandline options
 while [ ! -z "$1" ] ; do
 	case $1 in
+	--package-op)
+		./scripts/update_packages.py
+		;;
 	--source-op)
 		source_update
 		;;
