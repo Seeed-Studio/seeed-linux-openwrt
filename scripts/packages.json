@@ -12,15 +12,6 @@
             ]
         },
         {
-            "name": "openwrt-bypass",
-            "author": "kiddin9",
-            "url": "https://github.com/kiddin9/openwrt-bypass",
-            "branch": "main",
-            "items": [
-               "*"
-            ]
-        },
-        {
             "name": "luci-app-LingTiGameAcc",
             "author": "esirplayground",
             "url": "https://github.com/esirplayground/luci-app-LingTiGameAcc",
@@ -71,7 +62,7 @@
             "url": "https://github.com/Seeed-Studio/seeed-linux-openwrt",
             "branch": "magic",
             "items": [
-                "package"
+                "packages"
             ]
         },
         {
