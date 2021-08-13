@@ -120,7 +120,7 @@ def main():
                             print(e)
 
                 os.system("git add --all")
-                os.system("git commit -m \"{}/{}: tidy up\"".format(author, name))
+                os.system("git commit -m \"{}'s {}: tidy up\"".format(author, name))
 
         if os.path.exists("{}".format(packages_path)):
             shutil.rmtree("{}".format(packages_path), onerror=readonly_handler)

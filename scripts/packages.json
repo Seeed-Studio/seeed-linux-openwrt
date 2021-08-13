@@ -3,6 +3,33 @@
     "branch": "packages",
     "packages": [
         {
+            "name": "luci-app-diskman",
+            "author": "lisaac",
+            "url": "https://github.com/lisaac/luci-app-diskman",
+            "branch": "master",
+            "items": [
+               "*"
+            ]
+        },
+        {
+            "name": "luci-app-dockerman",
+            "author": "lisaac",
+            "url": "https://github.com/lisaac/luci-app-dockerman",
+            "branch": "master",
+            "items": [
+               "*"
+            ]
+        },
+        {
+            "name": "luci-lib-docker",
+            "author": "lisaac",
+            "url": "https://github.com/lisaac/luci-lib-docker",
+            "branch": "master",
+            "items": [
+               "*"
+            ]
+        },
+        {
             "name": "luci-app-UUGameAcc",
             "author": "BCYDTZ",
             "url": "https://github.com/BCYDTZ/luci-app-UUGameAcc",
@@ -31,8 +58,17 @@
         },
         {
             "name": "luci-app-fileassistant",
-            "author": "gztingting",
-            "url": "/home/lht/workplace/openwrt/work/luci-app-fileassistant-test",
+            "author": "awesome-openwrt",
+            "url": "https://github.com/awesome-openwrt/luci-app-fileassistant",
+            "branch": "master",
+            "items": [
+               "*"
+            ]
+        },
+        {
+            "name": "luci-app-webadmin",
+            "author": "awesome-openwrt",
+            "url": "https://github.com/awesome-openwrt/luci-app-webadmin",
             "branch": "master",
             "items": [
                "*"
@@ -74,7 +110,6 @@
                 "LICENSES",
                 "package/lean/UnblockNeteaseMusic-Go",
                 "package/lean/UnblockNeteaseMusic",
-                "package/lean/adbyby",
                 "package/lean/amule",
                 "package/lean/ntileech",
                 "package/lean/automount",
@@ -168,10 +203,8 @@
                 "package/lean/luci-app-verysync",
                 "package/lean/luci-app-vlmcsd",
                 "package/lean/luci-app-vsftpd",
-                "package/lean/luci-app-webadmin",
                 "package/lean/luci-app-wrtbwmon",
                 "package/lean/luci-app-xlnetacc",
-                "package/lean/luci-lib-docker",
                 "package/lean/luci-lib-fs",
                 "package/lean/luci-proto-bonding"
             ]
