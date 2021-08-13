@@ -1,7 +1,7 @@
 
 config core 'main'
 	option resourcebase '/luci-static/resources'
-	option mediaurlbase '/luci-static/infinityfreedom'
+	option mediaurlbase '/luci-static/argon'
 	option lang 'en'
 
 config extern 'flash_keep'
@@ -14,29 +14,6 @@ config extern 'flash_keep'
 	option uploads '/lib/uci/upload/'
 
 config internal 'languages'
-	option en 'English'
-	option zh_cn '简体中文 (Simplified Chinese)'
-	option ru 'Русский (Russian)'
-	option sv 'Svenska (Swedish)'
-	option ca 'Català (Catalan)'
-	option cs 'Čeština (Czech)'
-	option de 'Deutsch (German)'
-	option el 'Ελληνικά (Greek)'
-	option es 'Español (Spanish)'
-	option fr 'Français (French)'
-	option he 'עִבְרִית (Hebrew)'
-	option hu 'Magyar (Hungarian)'
-	option it 'Italiano (Italian)'
-	option ja '日本語 (Japanese)'
-	option ko '한국어 (Korean)'
-	option ms 'Bahasa Melayu (Malay)'
-	option pl 'Polski (Polish)'
-	option pt 'Português (Portuguese)'
-	option ro 'Română (Romanian)'
-	option sk 'Slovenčina (Slovak)'
-	option tr 'Türkçe (Turkish)'
-	option uk 'украї́нська (Ukrainian)'
-	option vi 'Tiếng Việt (Vietnamese)'
 
 config internal 'sauth'
 	option sessionpath '/tmp/luci-sessions'
@@ -46,12 +23,15 @@ config internal 'ccache'
 	option enable '1'
 
 config internal 'themes'
-	option Material '/luci-static/material'
-	option infinityfreedom '/luci-static/infinityfreedom'
 
 config internal 'diag'
 	option dns 'openwrt.org'
 	option ping 'openwrt.org'
 	option route 'openwrt.org'
 
+config internal apply
+	option rollback 90
+	option holdoff 4
+	option timeout 5
+	option display 1.5
 

@@ -1,7 +1,7 @@
 
 config core 'main'
 	option resourcebase '/luci-static/resources'
-	option mediaurlbase '/luci-static/infinityfreedom'
+	option mediaurlbase '/luci-static/argon'
 	option lang 'en'
 
 config extern 'flash_keep'
@@ -47,11 +47,16 @@ config internal 'ccache'
 
 config internal 'themes'
 	option Material '/luci-static/material'
-	option infinityfreedom '/luci-static/infinityfreedom'
 
 config internal 'diag'
 	option dns 'openwrt.org'
 	option ping 'openwrt.org'
 	option route 'openwrt.org'
+
+config internal apply
+	option rollback 90
+	option holdoff 4
+	option timeout 5
+	option display 1.5
 
 
