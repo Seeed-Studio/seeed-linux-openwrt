@@ -129,7 +129,7 @@ def main():
         os.chdir(packages_path)
         os.system("git remote set-url origin {}".format(repo_url))
 
-        #shutil.rmtree("{}".format(tmp_path), onerror=readonly_handler)
+        shutil.rmtree("{}".format(tmp_path), onerror=readonly_handler)
 
 
 if __name__ == '__main__':
