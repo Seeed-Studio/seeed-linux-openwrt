@@ -194,7 +194,6 @@
                 "package/lean/luci-app-rclone",
                 "package/lean/luci-app-softethervpn",
                 "package/lean/luci-app-ssrserver-python",
-                "package/lean/luci-app-syncdial",
                 "package/lean/luci-app-turboacc",
                 "package/lean/luci-app-unblockmusic",
                 "package/lean/luci-app-usb-printer",
