@@ -4,17 +4,15 @@
 source_update () {
 	echo "download code ..."
 	WORKSPACE_ROOT=`pwd`
-	OPENWRT_MAINLINE="https://github.com/openwrt/openwrt"
-	LEAN_PACKAGE="https://github.com/coolsnowwolf/lede"
-	git clone ${OPENWRT_MAINLINE} openwrt
+	OPENWRT_MAINLINE="/home/lht/workplace/tmp/openwrt"
+	LEAN_PACKAGE="/home/lht/workplace/tmp/lede"
+	git clone ${OPENWRT_MAINLINE} openwrt 
 	cd openwrt
 	OPENWRT_ROOT=`pwd`
 
 	git clone ${LEAN_PACKAGE} /tmp/lede  --bare
 	git clone /tmp/lede /tmp/lede-ucl
 	git clone /tmp/lede /tmp/lede-upx
-
-	git-filter-repo --path package/lean
 
 	cd /tmp/lede-ucl/
 	git-filter-repo --path tools/ucl/
@@ -62,7 +60,6 @@ source_update () {
 	sed -i 's/disabled=1/disabled=0/g' $OPENWRT_ROOT/package/kernel/mac80211/files/lib/wifi/mac80211.sh
 	git add package/kernel/mac80211/files/lib/wifi/mac80211.sh
 	git commit -m "enable cm4 wifi default"
-
 
 	#merge build: fix opkg install step for large package selection 
 	git cherry-pick 1854aeec4d37079690309dec3171d0864339f73a 
