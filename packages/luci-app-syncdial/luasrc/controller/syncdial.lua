@@ -4,7 +4,7 @@ function index()
 		return
 	end
 
-	entry({"admin", "network", "syncdial"}, cbi("syncdial"), _("多线多拨"), 103).dependent = true
+	entry({"admin", "network", "syncdial"}, cbi("syncdial"), _("Multi-Lan Multicast"), 103).dependent = true
 	entry({"admin", "network", "macvlan_redial"}, call("redial"), nil).leaf = true
 end
 
