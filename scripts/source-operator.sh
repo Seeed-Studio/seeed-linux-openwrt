@@ -4,8 +4,8 @@
 source_update () {
 	echo "download code ..."
 	WORKSPACE_ROOT=`pwd`
-	OPENWRT_MAINLINE="/home/lht/workplace/tmp/openwrt"
-	LEAN_PACKAGE="/home/lht/workplace/tmp/lede"
+	OPENWRT_MAINLINE="https://github.com/openwrt/openwrt"
+	LEAN_PACKAGE="https://github.com/coolsnowwolf/lede"
 	git clone ${OPENWRT_MAINLINE} openwrt 
 	cd openwrt
 	OPENWRT_ROOT=`pwd`
