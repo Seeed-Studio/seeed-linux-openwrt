@@ -5,7 +5,7 @@ function index()
     entry({"admin", "services"}, firstchild(), "Me", 89).dependent = false
 
     local page
-    page = entry({"admin", "services", "fileassistant"}, template("fileassistant"), _("文件助手"), 800)
+    page = entry({"admin", "services", "fileassistant"}, template("fileassistant"), _("File Assistant"), 800)
     page.i18n = "base"
     page.dependent = true
 
