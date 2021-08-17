@@ -2,7 +2,7 @@ module("luci.controller.fileassistant", package.seeall)
 
 function index()
 
-    entry({"admin", "services"}, firstchild(), "我的", 89).dependent = false
+    entry({"admin", "services"}, firstchild(), "Me", 89).dependent = false
 
     local page
     page = entry({"admin", "services", "fileassistant"}, template("fileassistant"), _("文件助手"), 800)
