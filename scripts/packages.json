@@ -160,7 +160,6 @@
                 "package/lean/luci-app-arpbind",
                 "package/lean/luci-app-autoreboot",
                 "package/lean/luci-app-baidupcs-web",
-                "package/lean/luci-app-cifs-mount",
                 "package/lean/luci-app-cifsd",
                 "package/lean/luci-app-cpufreq",
                 "package/lean/luci-app-dnsforwarder",
