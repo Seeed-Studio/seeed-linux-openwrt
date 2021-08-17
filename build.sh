@@ -1,7 +1,7 @@
 #!/bin/bash
 
-.scripts/file-editor.sh
-.scripts/source-operator.sh
+. scripts/file-editor.sh
+. scripts/source-operator.sh
 
 # parse commandline options
 while [ ! -z "$1" ]; do
