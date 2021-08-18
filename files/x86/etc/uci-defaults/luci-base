@@ -11,6 +11,7 @@ then
 fi	
 uci -q batch <<-EOF >/dev/null
 	set luci.main.lang=en
+	set luci.main.mediaurlbase=/luci-static/argon
 	commit luci
 EOF
 exit 0
