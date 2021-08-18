@@ -44,6 +44,9 @@ source_update () {
 	echo -e "src-git seeed https://github.com/Seeed-Studio/seeed-linux-openwrt;packages" >> ${OPENWRT_ROOT}/feeds.conf.default
 	git add feeds.conf.default
 	git commit -m "feeds: add seeed's packages"
+	echo -e "src-git node https://github.com/nxhack/openwrt-node-packages.git;openwrt-21.02" >> ${OPENWRT_ROOT}/feeds.conf.default
+	git add feeds.conf.default
+	git commit -m "feeds: add nxhack's node packages"
 	
 	echo "add latest lan78xx driver"
 	cp ../patches/961-drivers-net-lan78xx-dervers-update-to-lan78xx.napi20.patch  $OPENWRT_ROOT/target/linux/bcm27xx/patches-5.4/
