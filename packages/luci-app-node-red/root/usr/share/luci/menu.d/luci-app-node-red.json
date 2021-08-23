@@ -1,0 +1,15 @@
+{
+	"admin/services/node-red": {
+		"title": "Node RED",
+		"order": 90,
+		"action": {
+			"type": "view",
+			"path": "node-red",
+            "post": { "cbi.submit": true }
+		},
+		"depends": {
+			"acl": [ "luci-app-node-red" ],
+            "uci": { "node-red": true }
+		}
+	}
+}
