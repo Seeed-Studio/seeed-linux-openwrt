@@ -5,8 +5,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-homeassistant
-LUCI_TITLE:=LuCI support for Node Rad
-LUCI_DEPENDS:=+wget +node-red
+LUCI_TITLE:=LuCI support for Home Assistant
+LUCI_DEPENDS:=+wget
 LUCI_PKGARCH:=all
 PKG_VERSION:=1.1
 PKG_RELEASE:=5
