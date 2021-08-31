@@ -29,6 +29,11 @@ while [ ! -z "$1" ]; do
 		cd ${OPENWRTROOT}
 		if [ "${OPENWRT_CONFIG_FILE}" = "configs/x86_defconfig" ]; then
 			cp -rf ../files/x86 files
+
+			git clone  https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git /tmp/linux-firmware
+			mkdir -p files/lib/firmware
+			cp /tmp/linux-firmware/iwlwifi-QuZ-a0-*.* files/lib/firmware
+
 			echo "use x86 default custom rootfs config files"
 		fi
 		if [ "${OPENWRT_CONFIG_FILE}" = "configs/rpi_cm4_defconfig" ]; then
