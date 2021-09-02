@@ -1,0 +1,1 @@
+obj-m += lan78xx.o
