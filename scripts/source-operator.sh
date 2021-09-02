@@ -47,16 +47,6 @@ source_update () {
 	echo -e "src-git node https://github.com/nxhack/openwrt-node-packages.git;openwrt-21.02" >> ${OPENWRT_ROOT}/feeds.conf.default
 	git add feeds.conf.default
 	git commit -m "feeds: add nxhack's node packages"
-	
-	echo "add latest lan78xx driver"
-	cp ../patches/961-drivers-net-lan78xx-dervers-update-to-lan78xx.napi20.patch  $OPENWRT_ROOT/target/linux/bcm27xx/patches-5.4/
-	git add target/linux/bcm27xx/patches-5.4/961-drivers-net-lan78xx-dervers-update-to-lan78xx.napi20.patch
-	git commit -m "add latest lan78xx driver patches"
-
-	echo  "cm4: enable lan78xx and usb net drivers"
-	echo -e "CONFIG_USB_LAN78XX=y\nCONFIG_USB_NET_DRIVERS=y" >> $OPENWRT_ROOT/target/linux/bcm27xx/bcm2711/config-5.4
-	git add target/linux/bcm27xx/bcm2711/config-5.4
-	git commit -m "cm4: enable lan78xx and usb net drivers"
 
 	echo  "x86: enable igc net drivers"
 	echo -e "CONFIG_IGC=y" >> $OPENWRT_ROOT/target/linux/x86/config-5.4
