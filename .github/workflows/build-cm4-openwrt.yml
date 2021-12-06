@@ -5,7 +5,7 @@ on:
     types: [openwrt, cm4]
   workflow_dispatch:
   schedule:
-    - cron: 0 9 * * 1,2
+    - cron: 0 9 * * 1-5
 #  watch:
 #    types: started
 
