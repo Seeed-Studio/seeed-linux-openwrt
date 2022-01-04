@@ -59,8 +59,5 @@ source_update () {
 	git add package/kernel/mac80211/files/lib/wifi/mac80211.sh
 	git commit -m "enable cm4 wifi default"
 
-	#merge build: fix opkg install step for large package selection 
-	git cherry-pick 1854aeec4d37079690309dec3171d0864339f73a 
-
 }
 
