@@ -27,6 +27,17 @@ while [ ! -z "$1" ]; do
 		;;
 	--deconfig)
 		cd ${OPENWRTROOT}
+		if [ ! -d '../staging_dir' ]; then
+			mkdir ../staging_dir
+		fi
+		ln -s ../staging_dir 
+
+		if [ ! -d '../build_dir/host' ]; then
+			mkdir ../build_dir/host	-p
+			mkdir ./build_dir
+		fi
+		ln -s ../../build_dir/host build_dir/host
+
 		if [ "${OPENWRT_CONFIG_FILE}" = "configs/x86_defconfig" ]; then
 			cp -rf ../files/x86 files
 

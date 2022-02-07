@@ -27,6 +27,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@main
+      
+      - name: Openwrt Tools Cache
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-toolchains
+        with:
+          path: |
+            staging_dir
+            build_dir/host
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('configs/rpi_cm4_defconfig') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
 
       - name: Initialization Environment
         env:
