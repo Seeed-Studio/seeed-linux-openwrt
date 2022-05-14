@@ -25,11 +25,13 @@ while [ ! -z "$1" ]; do
 	--deconfig)
 		cd ${OPENWRTROOT}
 		if [ ! -d '../staging_dir' ]; then
+			echo "staging_dir cache not ready."
 			mkdir ../staging_dir
 		fi
 		ln -s ../staging_dir 
 
 		if [ ! -d '../build_dir/host' ]; then
+			echo "build_dir cache not ready."
 			mkdir ../build_dir/host	-p
 			mkdir ./build_dir
 		fi
