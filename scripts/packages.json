@@ -125,8 +125,6 @@
                 "package/lean/mt",
                 "package/lean/mtk-eip93",
                 "package/lean/n2n_v2",
-                "package/lean/ntfs3-mount",
-                "package/lean/ntfs3",
                 "package/lean/openwrt-fullconenat",
                 "package/lean/pdnsd-alt",
                 "package/lean/polarssl",
