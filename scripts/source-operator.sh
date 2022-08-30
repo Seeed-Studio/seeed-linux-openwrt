@@ -59,5 +59,9 @@ source_update () {
 	git add package/kernel/mac80211/files/lib/wifi/mac80211.sh
 	git commit -m "enable cm4 wifi default"
 
+	echo "update bcm27xx-gpu-fw"
+	git am $WORKSPACE_ROOT/patches/bcm27xx-gpu-fw-update.patch
+	git commit -m "bcm27xx-gpu-fw: update 2022-05-16"
+
 }
 
