@@ -1,1 +1,2 @@
 src-git seeed https://github.com/Seeed-Studio/seeed-linux-openwrt;packages
+src-git node https://github.com/nxhack/openwrt-node-packages.git;openwrt-21.02
