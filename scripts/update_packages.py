@@ -110,7 +110,8 @@ def main():
                 os.system("git merge {}/{} --allow-unrelated-histories --commit -m \"merge: {}'s {}\"".format(package_origin, branch, author, name))
             
                 os.chdir("{}".format(work_path(format(repo_branch))))
-                os.mkdir(author)
+                if not os.path.exists(author):
+                    os.mkdir(author)
                 for item in package['items']:
                     if os.path.exists("{}".format(work_path("{}/{}".format(repo_branch, item)))):
                         print("git mv {} {}/".format(item, author))
