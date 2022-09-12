@@ -95,7 +95,7 @@
         {
             "name": "lede",
             "author": "lean",
-            "url": "https://github.com/coolsnowwolf/packages",
+            "url": "https://github.com/coolsnowwolf/lede",
             "branch": "master",
             "items": [
                 "LICENSES",
@@ -173,8 +173,8 @@
                 "applications/luci-app-vsftpd",
                 "applications/luci-app-wrtbwmon",
                 "applications/luci-app-xlnetacc",
-                "applications/luci-lib-fs",
-                "applications/luci-proto-bonding"
+                "libs/luci-lib-fs",
+                "protocols/luci-proto-bonding"
             ]
         },
         {

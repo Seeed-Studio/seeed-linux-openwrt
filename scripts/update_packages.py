@@ -139,7 +139,9 @@ def main():
                             read_data = f.read()
                             f.seek(0)
                             f.truncate()
-                            f.write(read_data.replace("../../luci.mk", "$(TOPDIR)/feeds/luci/luci.mk"))
+                            write_data = read_data.replace("../../luci.mk", "$(TOPDIR)/feeds/luci/luci.mk")
+                            write_data = write_data.replace("../../lang", "$(TOPDIR)/feeds/packages/lang")
+                            f.write(write_data)
         
         os.system("git add --all")
         os.system("git commit -m \"tidy up\"")                        
