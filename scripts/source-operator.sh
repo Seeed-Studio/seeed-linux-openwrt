@@ -60,7 +60,8 @@ source_update () {
 	git commit -m "enable cm4 wifi default"
 
 	echo "update bcm27xx-gpu-fw"
-	git am $WORKSPACE_ROOT/patches/bcm27xx-gpu-fw-update.patch
+	git apply $WORKSPACE_ROOT/patches/bcm27xx-gpu-fw-update.patch
+	git add --all
 	git commit -m "bcm27xx-gpu-fw: update 2022-05-16"
 
 }
