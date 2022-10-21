@@ -70,7 +70,7 @@ BEGIN {
         if (channel) {
 		mode="NOHT"
 		if (ht) mode="HT20"
-		if (vht && band != "1:") mode="VHT80"
+		if (vht && band != "1:") mode="VHT20"
 		if (he) mode="HE80"
 		if (he && band == "1:") mode="HE20"
                 sub("\\[", "", channel)
@@ -175,7 +175,7 @@ detect_mac80211() {
 			set wireless.radio${devidx}.channel=${channel}
 			set wireless.radio${devidx}.band=${mode_band}
 			set wireless.radio${devidx}.htmode=$htmode
-			set wireless.radio${devidx}.disabled=1
+			set wireless.radio${devidx}.disabled=0
 
 			set wireless.default_radio${devidx}=wifi-iface
 			set wireless.default_radio${devidx}.device=radio${devidx}
