@@ -3,3 +3,4 @@ src-git-full luci https://git.openwrt.org/project/luci.git;openwrt-21.02
 src-git-full routing https://git.openwrt.org/feed/routing.git;openwrt-21.02
 src-git-full telephony https://git.openwrt.org/feed/telephony.git;openwrt-21.02
 #src-link custom /usr/src/openwrt/custom-feed
+src-git seeed https://github.com/Seeed-Studio/seeed-linux-openwrt;packages
