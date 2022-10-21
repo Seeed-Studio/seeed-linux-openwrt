@@ -1,0 +1,60 @@
+name:  Update OpenWrt packages
+
+on:
+  repository_dispatch:
+    types: [openwrt]
+  workflow_dispatch:
+  schedule:
+    - cron: 0 0 * * 1,2
+#  watch:
+#    types: started
+
+env:
+  IPV6MOD_IN_FIRMWARE: true
+  KMODS_IN_FIRMWARE: true
+  UPLOAD_RCLONE: true
+  TZ: Asia/Shanghai
+
+jobs:
+  Build:
+    runs-on: ubuntu-20.04
+
+    outputs:
+      OPENWRTROOT: ${{ steps.source-op.outputs.OPENWRTROOT }}
+      GENERATE_STATUS: ${{ steps.generate.outputs.GENERATE_STATUS }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Initialization Environment
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+          sudo -E apt-get -qq update
+          sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-1804) tree
+          sudo -E apt-get -qq autoremove --purge
+          sudo -E apt-get -qq clean
+          sudo ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+          git config --global user.name "I'm a Code Bot"
+          git config --global user.email "baozhu.zuo@gmail.com"
+          git checkout magic
+          pip3 install  git-filter-repo
+
+      - name: Package Update
+        id: package-op
+        run: |
+          df -hT $PWD
+          ./build.sh --package-op
+
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: "packages"
+          directory: "/tmp/packages"
+          repository: "Seeed-Studio/seeed-linux-openwrt"
+          force: true
+

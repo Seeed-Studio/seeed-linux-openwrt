@@ -1,0 +1,206 @@
+name: Build x86_64's OpenWrt
+
+on:
+  repository_dispatch:
+    types: [openwrt, x86]
+  workflow_dispatch:
+  schedule:
+    - cron: 0 1 * * 1-5
+#  watch:
+#    types: started
+
+env:
+  OPENWRT_CONFIG_FILE: configs/x86_defconfig 
+  IPV6MOD_IN_FIRMWARE: true
+  KMODS_IN_FIRMWARE: true
+  UPLOAD_RCLONE: true
+  TZ: Asia/Shanghai
+
+jobs:
+  Build:
+    runs-on: ubuntu-20.04
+
+    outputs:
+      OPENWRTROOT: ${{ steps.source-op.outputs.OPENWRTROOT }}
+      GENERATE_STATUS: ${{ steps.generate.outputs.GENERATE_STATUS }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Openwrt Tools Cache
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-toolchains
+        with:
+          path: |
+            staging_dir
+            build_dir/host
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('configs/x86_defconfig') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      - name: Initialization Environment
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+          sudo -E apt-get -qq update
+          sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-1804) tree
+          sudo -E apt-get -qq autoremove --purge
+          sudo -E apt-get -qq clean
+          sudo ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+          git config --global user.name "I'm a Code Bot"
+          git config --global user.email "baozhu.zuo@gmail.com"
+          git checkout magic
+          pip3 install  git-filter-repo
+
+      - name: Source Code Update
+        id: source-op
+        run: |
+          df -hT $PWD
+          ./build.sh --source-op
+          cd openwrt
+          echo "OPENWRTROOT=$PWD" >> $GITHUB_ENV
+          echo "::set-output name=OPENWRTROOT::$(echo $PWD)"
+          echo "::set-output name=SOURCR_UPDATE::success"
+
+      - name: Feed Update
+        if: steps.source-op.outputs.SOURCR_UPDATE == 'success'
+        id: feeds
+        run: |
+          ./build.sh --feeds
+          echo "::set-output name=FEED_UPDATE::success"
+
+      - name: Openwrt Deconfig
+        if: steps.feeds.outputs.FEED_UPDATE == 'success'
+        id: deconfig
+        run: |
+          ./build.sh --deconfig
+          echo "::set-output name=DEFCONFIG::success"
+
+      - name: Openwrt Package Download
+        if: steps.deconfig.outputs.DEFCONFIG == 'success'
+        id: download
+        run: |
+          ./build.sh --download
+          echo "::set-output name=DOWNLOAD::success"
+
+      - name: Openwrt Tools Compile
+        if: steps.download.outputs.DOWNLOAD == 'success'
+        id: tools-compile
+        run: |
+          ./build.sh --tools-compile
+          echo "::set-output name=TOOLS_COMPILE::success"
+
+      - name: Openwrt Target Compile
+        if: steps.tools-compile.outputs.TOOLS_COMPILE == 'success'
+        id: target-compile
+        run: |
+          ./build.sh --target-compile
+          echo "::set-output name=TARGET_COMPILE::success"
+
+      - name: Openwrt package Compile
+        if: steps.target-compile.outputs.TARGET_COMPILE == 'success'
+        id: package-compile
+        run: |
+          ./build.sh --package-compile
+          echo "::set-output name=PACKAGE_COMPILE::success"
+
+      - name: Openwrt package Install
+        if: steps.package-compile.outputs.PACKAGE_COMPILE == 'success'
+        id: package-install
+        run: |
+          ./build.sh --package-install
+          echo "::set-output name=PACKAGE_INSTALL::success"
+
+      - name: Openwrt Target Install
+        if: steps.package-install.outputs.PACKAGE_INSTALL == 'success'
+        id: target-install
+        run: |
+          ./build.sh --target-install
+          echo "::set-output name=TARGET_INSTALL::success"
+
+
+      - name: Push Source Code to Github
+        if: steps.target-install.outputs.TARGET_INSTALL == 'success'
+        id: generate
+        run: |
+          echo "::set-output name=GENERATE_STATUS::success"
+          cd openwrt
+          mkdir -p .github/workflows
+          cp ../.github/workflows/*  .github/workflows/
+          git add --all
+          git commit -m "Github Action: copy workflows from magic branch"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: "openwrt-21.02"
+          directory: "openwrt"
+          repository: "Seeed-Studio/seeed-linux-openwrt"
+          force: true
+
+      - name: Upload Bin Folder
+        uses: actions/upload-artifact@main
+        if: steps.generate.outputs.GENERATE_STATUS == 'success'
+        with:
+          name: bin-archive
+          path: openwrt/bin
+
+
+  Upload:
+    needs: [Build]
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Restore Variables
+        run: |
+          echo "OPENWRTROOT=$(echo '${{needs.Build.outputs.OPENWRTROOT}}')" >> $GITHUB_ENV
+          echo "PLATFORM=$(echo '${{needs.Build.outputs.PLATFORM}}')" >> $GITHUB_ENV
+          echo "TARGET=$(echo '${{needs.Build.outputs.TARGET}}')" >> $GITHUB_ENV
+          echo "SUBTARGET=$(echo '${{needs.Build.outputs.SUBTARGET}}')" >> $GITHUB_ENV
+          echo "FIRMWARE=$(echo '${{needs.Build.outputs.FIRMWARE}}')" >> $GITHUB_ENV
+          echo "GENERATE_STATUS=$(echo '${{needs.Build.outputs.GENERATE_STATUS}}')" >> $GITHUB_ENV
+
+      - name: Download Bin Folder
+        uses: actions/download-artifact@v2
+        if: env.GENERATE_STATUS == 'success'
+        with:
+          name: bin-archive
+          path: openwrt/bin
+
+
+      - name: Rclone Upload
+        env:
+          RCLONE_PACKAGE: ${{ secrets.ONEDRIVE_NAME }}
+        if: env.GENERATE_STATUS == 'success' && env.UPLOAD_RCLONE == 'true' && env.RCLONE_PACKAGE != ''
+        run: |
+          cd $OPENWRTROOT
+          ls 
+          curl https://rclone.org/install.sh | sudo bash
+          mkdir -p ~/.config/rclone/
+          cat << EOF > /tmp/rclone.de
+          ${{ secrets.ONEDRIVE_CONF }}
+          EOF
+          base64  -d  /tmp/rclone.de > ~/.config/rclone/rclone.conf
+          echo "# Rclone Packages Upload Rule" >> /tmp/upload-rule.txt
+          echo "- openwrt*" >> /tmp/upload-rule.txt
+          echo "- sha256sums" >> /tmp/upload-rule.txt
+          echo "- packages-server.zip" >> /tmp/upload-rule.txt
+          echo "- *.buildinfo" >> /tmp/upload-rule.txt
+          echo "+ openwrt-keyring*" >> /tmp/upload-rule.txt
+          rclone mkdir $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/x86
+          #rclone copy bin $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/rpi --filter-from   /tmp/upload-rule.txt
+          rclone copy bin/targets $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/x86
+          echo "::warning file=Firmware-OneDrive::Download Link: https://1drv.ms/u/s!AqG2uRmVUhlSh0NHMLMmQKLyASvi?e=mup3cd"
+
+      - name: Delete Artifacts
+        uses: geekyeggo/delete-artifact@v1
+        with:
+          name: |
+            bin-archive
