@@ -10,7 +10,8 @@ while [ ! -z "$1" ]; do
 		./scripts/update_packages.py
 		;;
 	--source-op)
-		source_update
+		#source_update
+		git clone https://github.com/Seeed-Studio/seeed-linux-openwrt -b openwrt-21.02 --depth=1 --single-branch openwrt
 		;;
 	--feeds)
 	    WORKSPACE_ROOT=`pwd`
