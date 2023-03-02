@@ -77,7 +77,7 @@
         {
             "name": "luci-app-argon-config",
             "author": "jerrykuku",
-            "url": "https://github.com/jerrykuku/luci-theme-argon",
+            "url": "https://github.com/jerrykuku/luci-app-argon-config",
             "branch": "master",
             "items": [
                 "*"
