@@ -1,0 +1,15 @@
+{
+	"admin/services/homeassiant": {
+		"title": "Home Assistant",
+		"order": 90,
+		"action": {
+			"type": "view",
+			"path": "homeassiant",
+            "post": { "cbi.submit": true }
+		},
+		"depends": {
+			"acl": [ "homeassiant" ],
+            "uci": { "homeassiant": true }
+		}
+	}
+}

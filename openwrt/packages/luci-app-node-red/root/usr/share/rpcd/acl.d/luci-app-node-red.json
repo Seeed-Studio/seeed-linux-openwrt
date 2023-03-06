@@ -1,0 +1,14 @@
+{
+	"luci-app-node-red": {
+		"description": "Grant UCI access for luci-app-node-red",
+		"read": {
+			"file": {
+				"/usr/libexec/node-red-ctrl": [ "exec" ]
+			},
+			"uci": [ "node-red" ]
+		},
+		"write": {
+			"uci": [ "node-red" ]
+		}
+	}
+}
