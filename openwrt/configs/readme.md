@@ -1,0 +1,1 @@
+configs for seeed-linux-openwrt

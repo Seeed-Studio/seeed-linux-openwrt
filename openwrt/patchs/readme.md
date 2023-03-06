@@ -1,0 +1,1 @@
+patchs for seeed-linux-openwrt
