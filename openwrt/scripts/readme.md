@@ -1,0 +1,1 @@
+scripts for seeed-linux-openwrt

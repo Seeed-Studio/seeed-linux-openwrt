@@ -1,0 +1,35 @@
+name: Packages update
+on:
+  repository_dispatch:
+    types: [openwrt]
+  workflow_dispatch:
+  schedule:
+    - cron: 0 0 * * 1,2
+
+jobs: 
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          reff: "main"
+          fetch-depth: 2
+      - name: Setup Environment
+        run: |
+          sudo ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+          git config --global user.name "I'm a Code Bot"
+          git config --global user.email "baozhu.zuo@gmail.com"
+          pip3 install -r requirements.txt
+      - name: Fetch Packages
+        run: |
+          python3 ./scripts/fetch_packages.py --list ./openwrt/packages/packages.list
+    
+      - name: Push Packages
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: "packages"
+          directory: "/tmp/packages"
+          repository: "Seeed-Studio/seeed-linux-openwrt"
+          force: true
