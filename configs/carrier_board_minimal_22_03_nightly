@@ -1,14 +1,14 @@
 {
     "name": "carrier_board_minimal_22-03",
     "description": "Minimal openwrt config for Carrier Board",
+    "target": "bcm27xx",
+    "subtarget": "bcm2711",
     "version": "openwrt-22.03",
     "config": "carrier_board_minimal_22_03_deconfig",
     "file": "carrier_board/minimal",
-    "patch": [],
-    "feeds": [
-        "src-git-full seeed https://github.com/Seeed-Studio/seeed-linux-openwrt;packages",
-        "src-git-full node https://github.com/nxhack/openwrt-node-packages.git;openwrt-22.03"
+    "patch": [
     ],
+    "feeds": [],
     "action": {
         "prefeeds": null,
         "postfeeds": null,

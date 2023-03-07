@@ -1,10 +1,15 @@
-name: Build Carrier Board Minimal 22.03
+name: Build Carrier Board Minimal 22.03 Nightly
 on:
   repository_dispatch:
     types: [openwrt]
   workflow_dispatch:
   schedule:
     - cron: 0 9 * * 1-5
+
+env:
+  BUILD_CONFIG_FILE: carrier_board_minimal_22_03_nightly
+  TARGET: bcm27xx
+  SUBTARGET: bcm2711
 
 jobs:
   Build:
@@ -20,36 +25,37 @@ jobs:
           sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
           sudo -E apt-get -qq update
           sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004) tree
+          sudo -E apt-get -qq install jq
           sudo -E apt-get -qq autoremove --purge
           sudo -E apt-get -qq clean
           sudo ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
           git config --global user.name "I'm a Code Bot"
           git config --global user.email "baozhu.zuo@gmail.com"
           pip3 install -r requirements.txt
-      - name: Do Create
+      - name: Create
         run: |
-          python3 ./scripts/build.py --config configs/carrier_board_minimal_22_03.config --action create
-      - name: Do Feeds
+          python3 ./scripts/build.py --config configs/${{ env.BUILD_CONFIG_FILE }} --action create
+      - name: Feeds
         run: |
-          python3 ./scripts/build.py --config configs/carrier_board_minimal_22_03.config --action feeds
-      - name: Do Config
+          python3 ./scripts/build.py --config configs/${{ env.BUILD_CONFIG_FILE }} --action feeds
+      - name: Config
         run: |
-          python3 ./scripts/build.py --config configs/carrier_board_minimal_22_03.config --action config
-      - name: Do Download
+          python3 ./scripts/build.py --config configs/${{ env.BUILD_CONFIG_FILE }} --action config
+      - name: Download
         run: |
-          python3 ./scripts/build.py --config configs/carrier_board_minimal_22_03.config --action download
-      - name: Do Compile
+          python3 ./scripts/build.py --config configs/${{ env.BUILD_CONFIG_FILE }} --action download
+      - name: Compile
         run: |
-          python3 ./scripts/build.py --config configs/carrier_board_minimal_22_03.config --action compile
-      - name: Do Install
+          python3 ./scripts/build.py --config configs/${{ env.BUILD_CONFIG_FILE }} --action compile
+      - name: Install
         run: |
-          python3 ./scripts/build.py --config configs/carrier_board_minimal_22_03.config --action install
+          python3 ./scripts/build.py --config configs/${{ env.BUILD_CONFIG_FILE }} --action install
       
       - name: Upload Image
         uses: actions/upload-artifact@v2
         with:
-          name: carrier-board-minimal-22_03
-          path: ./build/carrier-board-minimal-22_03/bin
+          name: ${{ env.BUILD_CONFIG_FILE }}
+          path: ./build/${{ env.BUILD_CONFIG_FILE }}/bin/
           retention-days: 1
       
   Upload:
@@ -60,17 +66,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@main
 
-      - name: Restore Variables
-        run: |
-          echo "OPENWRTROOT=$(echo '${{needs.Build.outputs.OPENWRTROOT}}')" >> $GITHUB_ENV
-          echo "PLATFORM=$(echo '${{needs.Build.outputs.PLATFORM}}')" >> $GITHUB_ENV
-          echo "TARGET=$(echo '${{needs.Build.outputs.TARGET}}')" >> $GITHUB_ENV
-          echo "SUBTARGET=$(echo '${{needs.Build.outputs.SUBTARGET}}')" >> $GITHUB_ENV
-          echo "FIRMWARE=$(echo '${{needs.Build.outputs.FIRMWARE}}')" >> $GITHUB_ENV
-          echo "GENERATE_STATUS=$(echo '${{needs.Build.outputs.GENERATE_STATUS}}')" >> $GITHUB_ENV
       - name: Download Bin Folder
         uses: actions/download-artifact@v2
-        if: env.GENERATE_STATUS == 'success'
         with:
           name: bin-archive
           path: openwrt/bin
@@ -95,9 +92,9 @@ jobs:
           echo "- packages-server.zip" >> /tmp/upload-rule.txt
           echo "- *.buildinfo" >> /tmp/upload-rule.txt
           echo "+ openwrt-keyring*" >> /tmp/upload-rule.txt
-          rclone mkdir $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/rpi
-          #rclone copy bin $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/rpi --filter-from   /tmp/upload-rule.txt
-          rclone copy bin/targets $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/rpi 
+          rclone mkdir $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/${{ env.TARGET }}/${{ env.SUBTARGET }}/${{ env.BUILD_CONFIG_FILE }}
+          #rclone copy bin $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/${{ env.TARGET }}/${{ env.SUBTARGET }}/${{ env.BUILD_CONFIG_FILE }} --filter-from   /tmp/upload-rule.txt
+          rclone copy bin/targets $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/${{ env.TARGET }}/${{ env.SUBTARGET }}/${{ env.BUILD_CONFIG_FILE }}
           echo "::warning file=Firmware-OneDrive::Download Link: https://1drv.ms/u/s!AqG2uRmVUhlSh0NHMLMmQKLyASvi?e=mup3cd"
       - name: Delete Artifacts
         uses: geekyeggo/delete-artifact@v1
