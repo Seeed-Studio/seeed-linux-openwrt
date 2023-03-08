@@ -16,9 +16,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
-          reff: "main"
+          ref: "main"
           fetch-depth: 2
       - name: Setup Environment
         run: |
@@ -52,10 +52,10 @@ jobs:
           python3 ./scripts/build.py --config configs/${{ env.BUILD_CONFIG_FILE }} --action install
       
       - name: Upload Image
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@main
         with:
           name: ${{ env.BUILD_CONFIG_FILE }}
-          path: ./build/${{ env.BUILD_CONFIG_FILE }}/bin/
+          path: ./build/bin
           retention-days: 1
       
   Upload:
@@ -64,21 +64,23 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v3
+        with:
+          ref: "main"
+          fetch-depth: 2
 
       - name: Download Bin Folder
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@main
         with:
-          name: bin-archive
-          path: openwrt/bin
+          name: ${{ env.BUILD_CONFIG_FILE }}
+          path: ./build/bin
 
 
       - name: Rclone Upload
         env:
           RCLONE_PACKAGE: ${{ secrets.ONEDRIVE_NAME }}
-        if: env.GENERATE_STATUS == 'success' && env.UPLOAD_RCLONE == 'true' && env.RCLONE_PACKAGE != ''
         run: |
-          cd $OPENWRTROOT
+          cd /home/runner/work/seeed-linux-openwrt/seeed-linux-openwrt
           ls 
           curl https://rclone.org/install.sh | sudo bash
           mkdir -p ~/.config/rclone/
@@ -92,11 +94,8 @@ jobs:
           echo "- packages-server.zip" >> /tmp/upload-rule.txt
           echo "- *.buildinfo" >> /tmp/upload-rule.txt
           echo "+ openwrt-keyring*" >> /tmp/upload-rule.txt
-          rclone mkdir $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/${{ env.TARGET }}/${{ env.SUBTARGET }}/${{ env.BUILD_CONFIG_FILE }}
+          rclone mkdir $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/
           #rclone copy bin $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/${{ env.TARGET }}/${{ env.SUBTARGET }}/${{ env.BUILD_CONFIG_FILE }} --filter-from   /tmp/upload-rule.txt
-          rclone copy bin/targets $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/${{ env.TARGET }}/${{ env.SUBTARGET }}/${{ env.BUILD_CONFIG_FILE }}
+          rclone copy ./build/bin $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/
           echo "::warning file=Firmware-OneDrive::Download Link: https://1drv.ms/u/s!AqG2uRmVUhlSh0NHMLMmQKLyASvi?e=mup3cd"
-      - name: Delete Artifacts
-        uses: geekyeggo/delete-artifact@v1
-        with:
-          name: bin-archive
+          

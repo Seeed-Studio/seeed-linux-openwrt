@@ -5,8 +5,9 @@
     "subtarget": "bcm2711",
     "version": "openwrt-22.03",
     "config": "carrier_board_minimal_22_03_deconfig",
-    "file": "carrier_board/minimal",
-    "patch": [
+    "files": "carrier_board/minimal",
+    "patches": [
+        "target/linux/bcm27xx/patches-5.10/9999-0001-lan78xx.patch"
     ],
     "feeds": [],
     "action": {

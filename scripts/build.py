@@ -18,7 +18,7 @@ def readonly_handler(func, path, execinfo):
 
 work_dir = os.path.abspath('.')
 build_dir = os.path.join(work_dir, 'build')
-openwrt_dir = os.path.join(build_dir, 'openwrt')
+build_dir = os.path.join(build_dir, 'openwrt')
 dl_dir = None
 config = None
 
@@ -41,11 +41,11 @@ def do_create():
     print("Download openwrt source code...")
     os.chdir(build_dir)
     ret = os.system('git clone https://github.com/openwrt/openwrt -b %s %s --depth 1' %
-                    (config['version'], openwrt_dir))
+                    (config['version'], build_dir))
     # if ret != 0:
     #     raise Exception('Download openwrt failed.')
 
-    os.chdir(os.path.join(build_dir, openwrt_dir))
+    os.chdir(build_dir)
 
     # copy config file
     print("Copy config file to openwrt's source code...")
@@ -60,12 +60,12 @@ def do_create():
         raise Exception('Copy config file failed.')
 
     # copy root file
-    print("ln root file to openwrt's source code...")
-    if config['file'] != '':
+    print("Copy root file to openwrt's source code...")
+    if config['files'] != '':
         if os.path.exists('files'):
             os.system('rm -rf files')
-            
-        ret = os.system('cp -rf %s files' % os.path.join(work_dir, 'openwrt', 'files', config['file']))
+        ret = os.system('cp -rf %s files' %
+                        os.path.join(work_dir, 'openwrt', 'files', config['files']))
         if ret != 0:
             raise Exception("Copy root file failed")
     else:
@@ -91,15 +91,16 @@ def do_create():
         if os.path.exists('dl'):
             os.system('rm -rf dl')
         os.system('ln -sn %s dl' % dl_dir)
-    
+
     # copy patches
-    # if config['patches'] != '':
-    #     print("Copy patches to openwrt's source code...")
-    #     patches = config['patches']
-    #     for patch in patches:
-    #         ret = os.system('cp -rf %s %s' % os.path.join(work_dir, 'openwrt', 'patches', patch), )
-    #         if ret != 0:
-    #             raise Exception("Copy patches failed")
+    if config['patches'] != '':
+        print("Copy patches to openwrt's source code...")
+        patches = config['patches']
+        for patch in patches:
+            ret = os.system(
+                'cp %s %s' % (os.path.join(work_dir, "openwrt", "patches", patch), os.path.join(build_dir, patch)))
+            if ret != 0:
+                raise Exception("Copy patches failed")
 
     print("Setup openwrt project done.")
 
@@ -111,11 +112,11 @@ def do_action_hook(action):
             ret = os.system(config['action'][action])
             if ret != 0:
                 raise Exception("Action %s failed." % action)
-    os.chdir(os.path.join(build_dir, openwrt_dir))
+    os.chdir(build_dir)
 
 
 def do_feeds():
-    os.chdir(os.path.join(build_dir, openwrt_dir))
+    os.chdir(build_dir)
     do_action_hook('prefeeds')
     ret = os.system('./scripts/feeds update -a')
     if ret != 0:
@@ -127,8 +128,12 @@ def do_feeds():
 
 
 def do_config():
-    os.chdir(os.path.join(build_dir, openwrt_dir))
+    os.chdir(build_dir)
     do_action_hook('preconfig')
+    ret = os.system('cp -rf %s .config' %
+                    os.path.join(work_dir, 'openwrt', 'configs', config['config']))
+    if ret != 0:
+        raise Exception('Copy config file failed.')
     ret = os.system('make defconfig')
     if ret != 0:
         raise Exception("Config failed.")
@@ -136,7 +141,7 @@ def do_config():
 
 
 def do_download():
-    os.chdir(os.path.join(build_dir, openwrt_dir))
+    os.chdir(build_dir)
     do_action_hook('predownload')
     ret = os.system('make download -j%d' % cpu_count())
     if ret != 0:
@@ -219,9 +224,6 @@ if __name__ == '__main__':
     if not os.path.exists(args.config):
         print("Config file %s not found." % args.config)
         sys.exit(1)
-
-    openwrt_dir = os.path.join(
-        build_dir,  os.path.basename(args.config).split('.')[0])
 
     config = json.load(open(args.config, 'r'))
 
