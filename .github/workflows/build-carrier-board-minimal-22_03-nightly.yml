@@ -94,8 +94,8 @@ jobs:
           echo "- packages-server.zip" >> /tmp/upload-rule.txt
           echo "- *.buildinfo" >> /tmp/upload-rule.txt
           echo "+ openwrt-keyring*" >> /tmp/upload-rule.txt
-          rclone mkdir $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/
+          rclone mkdir $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/${{ env.TARGET }}/${{ env.SUBTARGET }}/${{ env.BUILD_CONFIG_FILE }}
           #rclone copy bin $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/${{ env.TARGET }}/${{ env.SUBTARGET }}/${{ env.BUILD_CONFIG_FILE }} --filter-from   /tmp/upload-rule.txt
-          rclone copy ./build/bin $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/
+          rclone copy ./build/bin $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/${{ env.TARGET }}/${{ env.SUBTARGET }}/${{ env.BUILD_CONFIG_FILE }}
           echo "::warning file=Firmware-OneDrive::Download Link: https://1drv.ms/u/s!AqG2uRmVUhlSh0NHMLMmQKLyASvi?e=mup3cd"
           

@@ -1,0 +1,25 @@
+{
+    "name": "x86_generic_minimal_22-03",
+    "description": "Minimal openwrt config for x86_64 generic",
+    "target": "x86_64",
+    "subtarget": "generic",
+    "version": "openwrt-22.03",
+    "config": "x86_64_generic_minima_defconfig",
+    "files": "x86_64/minimal",
+    "patches": [],
+    "feeds": [],
+    "action": {
+        "prefeeds": null,
+        "postfeeds": null,
+        "preconfig": null,
+        "postconfig": null,
+        "predownload": null,
+        "postdownload": null,
+        "precompile": [
+            "echo -e \"CONFIG_IGC=y\" >> build/target/linux/x86/config-5.10"
+        ],
+        "postcompile": null,
+        "preinstall": null,
+        "postinstall": null
+    }
+}
