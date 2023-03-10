@@ -196,7 +196,7 @@ def do_install():
         raise Exception("Install target failed.")
     do_action_hook('postinstall')
     
-def do_export(args):
+def do_export():
     print("Do Export...")
     os.system("mkdir -p %s" % os.path.join(work_dir, 'bin', 'targets', config['target'], config['subtarget'], config['name']))
     os.system('cp -rf %s %s' % (os.path.join(openwrt_dir, 'bin', 'targets', config['target'], config['subtarget']), os.path.join(
