@@ -200,7 +200,7 @@ def do_export():
     print("Do Export...")
     os.system("mkdir -p %s" % os.path.join(work_dir, 'bin', 'targets', config['target'], config['subtarget'], config['name']))
     os.system('cp -rf %s %s' % (os.path.join(openwrt_dir, 'bin', 'targets', config['target'], config['subtarget']), os.path.join(
-        work_dir, 'bin', 'targets', config['target'], config['subtarget'], config['name'])))
+        work_dir, 'bin', 'targets', config['target'], config['subtarget'], config['name'].split('_')[-1] )))
 
 
 def do_clean():

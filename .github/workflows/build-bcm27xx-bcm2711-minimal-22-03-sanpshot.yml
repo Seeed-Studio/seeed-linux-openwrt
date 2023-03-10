@@ -10,7 +10,7 @@ env:
   BUILD_CONFIG_FILE: bcm27xx_bcm2711_22_03_snapshot_minimal
   TARGET: bcm27xx
   SUBTARGET: bcm2711
-  OPENWRT_VERSION: openwrt-22.03-snapshot
+  OPENWRT_VERSION: openwrt-22.03
   TYPE: minimal
   
 
@@ -59,7 +59,7 @@ jobs:
         with:
           name: ${{ env.BUILD_CONFIG_FILE }}
           path: | 
-            ./build/bin/targets/${{ env.TARGET }}/${{ env.SUBTARGET }}/
+            ./build/${{env.OPENWRT_VERSION}}/bin/targets/${{ env.TARGET }}/${{ env.SUBTARGET }}/
           retention-days: 7
       
   Upload:

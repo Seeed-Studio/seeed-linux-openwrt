@@ -1,0 +1,25 @@
+{
+    "name": "bcm27xx_bcm2711_22_03_snapshot_minimal",
+    "description": "Minimal openwrt v22.03.3 config for bcm2711",
+    "target": "bcm27xx",
+    "subtarget": "bcm2711",
+    "version": "v22.03.3",
+    "config": "bcm27xx_bcm2711_minimal_22_03_defconfig",
+    "files": ["minimal"],
+    "patches": [
+        "0001-lan78xx-fixed-bandwitdh-and-throughput.patch"
+    ],
+    "feeds": [],
+    "action": {
+        "prefeeds": null,
+        "postfeeds": null,
+        "preconfig": null,
+        "postconfig": null,
+        "predownload": null,
+        "postdownload": null,
+        "precompile": null,
+        "postcompile": null,
+        "preinstall": null,
+        "postinstall": null
+    }
+}

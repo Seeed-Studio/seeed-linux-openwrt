@@ -1,9 +1,9 @@
 {
     "name": "x86_64_generic_22_03_snapshot_minimal",
-    "description": "Minimal  openwrt-22.03 snapshot config for x86_64 generic",
+    "description": "Minimal openwrt v22.03.3 config for x86_64 generic",
     "target": "x86",
     "subtarget": "64",
-    "version": "openwrt-22.03",
+    "version": "v22.03.3",
     "config": "x86_64_generic_minimal_22_03_deconfig",
     "files": [
         "minimal"
