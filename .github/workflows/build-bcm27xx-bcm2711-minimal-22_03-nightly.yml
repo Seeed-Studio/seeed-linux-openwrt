@@ -1,0 +1,103 @@
+name: Build BCM27XX_BCM2711 OpenWrt-22.03-snapshot Nightly
+on:
+  repository_dispatch:
+    types: [openwrt]
+  workflow_dispatch:
+  schedule:
+    - cron: 0 9 * * 1-5
+
+env:
+  BUILD_CONFIG_FILE: bcm27xx_bcm2711_22_03_snapshot_minimal
+  TARGET: bcm27xx
+  SUBTARGET: bcm2711
+  OPENWRT_VERSION: openwrt-22.03-snapshot
+  
+
+jobs:
+  Build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: "main"
+          fetch-depth: 2
+      - name: Setup Environment
+        run: |
+          sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+          sudo -E apt-get -qq update
+          sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004) tree
+          sudo -E apt-get -qq install jq
+          sudo -E apt-get -qq autoremove --purge
+          sudo -E apt-get -qq clean
+          sudo ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+          git config --global user.name "I'm a Code Bot"
+          git config --global user.email "baozhu.zuo@gmail.com"
+          pip3 install -r requirements.txt
+      - name: Create
+        run: |
+          python3 ./scripts/build.py --config configs/${{ env.BUILD_CONFIG_FILE }} --action create
+      - name: Feeds
+        run: |
+          python3 ./scripts/build.py --config configs/${{ env.BUILD_CONFIG_FILE }} --action feeds
+      - name: Config
+        run: |
+          python3 ./scripts/build.py --config configs/${{ env.BUILD_CONFIG_FILE }} --action config
+      - name: Download
+        run: |
+          python3 ./scripts/build.py --config configs/${{ env.BUILD_CONFIG_FILE }} --action download
+      - name: Compile
+        run: |
+          python3 ./scripts/build.py --config configs/${{ env.BUILD_CONFIG_FILE }} --action compile
+      - name: Install
+        run: |
+          python3 ./scripts/build.py --config configs/${{ env.BUILD_CONFIG_FILE }} --action install
+      
+      - name: Upload Image
+        uses: actions/upload-artifact@main
+        with:
+          name: ${{ env.BUILD_CONFIG_FILE }}
+          path: | 
+            ./build/bin/targets/${{ env.TARGET }}/${{ env.SUBTARGET }}/
+            !./build/bin/targets/${{ env.TARGET }}/${{ env.SUBTARGET }}/packages/
+          retention-days: 7
+      
+  Upload:
+    needs: [Build]
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: "main"
+          fetch-depth: 2
+      - name: Setup Environment
+        run: |
+          curl https://rclone.org/install.sh | sudo bash
+
+      - name: Download Bin Folder
+        uses: actions/download-artifact@main
+        with:
+          name: ${{ env.BUILD_CONFIG_FILE }}
+          path: ./build/bin
+
+      - name: Upload Image to OneDrive
+        env:
+          RCLONE_PACKAGE: ${{ secrets.ONEDRIVE_NAME }}
+        run: |
+          mkdir -p ~/.config/rclone/
+          cat << EOF > /tmp/rclone.de
+          ${{ secrets.ONEDRIVE_CONF }}
+          EOF
+          base64  -d  /tmp/rclone.de > ~/.config/rclone/rclone.conf
+          echo "# Rclone Packages Upload Rule" >> /tmp/upload-rule.txt
+          echo "- openwrt*" >> /tmp/upload-rule.txt
+          echo "- sha256sums" >> /tmp/upload-rule.txt
+          echo "- packages-server.zip" >> /tmp/upload-rule.txt
+          echo "- *.buildinfo" >> /tmp/upload-rule.txt
+          echo "+ openwrt-keyring*" >> /tmp/upload-rule.txt
+          rclone mkdir $RCLONE_PACKAGE:Openwrt/nightly/${{env.OPENWRT_VERSION}}/$(date +"%Y-%m-%d")/${{ env.TARGET }}/${{ env.SUBTARGET }}/${{ env.BUILD_CONFIG_FILE }}
+          rclone copy ./build/bin $RCLONE_PACKAGE:Openwrt/nightly/${{env.OPENWRT_VERSION}}/$(date +"%Y-%m-%d")/${{ env.TARGET }}/${{ env.SUBTARGET }}/${{ env.BUILD_CONFIG_FILE }}
+          echo "::notice file=Firmware-OneDrive::Download Link: https://1drv.ms/u/s!AqG2uRmVUhlSh0NHMLMmQKLyASvi?e=mup3cd"
+          

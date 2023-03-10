@@ -8,7 +8,7 @@ from multiprocessing import cpu_count
 
 
 ACTION = ['create', 'feeds', 'config', 'download', 'compile',
-          'install', 'all', 'clean', 'distclean']
+          'install', 'all', 'clean', 'distclean', 'export']
 
 
 def readonly_handler(func, path, execinfo):
@@ -18,7 +18,7 @@ def readonly_handler(func, path, execinfo):
 
 work_dir = os.path.abspath('.')
 build_dir = os.path.join(work_dir, 'build')
-build_dir = os.path.join(build_dir, 'openwrt')
+openwrt_dir = os.path.join(build_dir, 'openwrt')
 dl_dir = None
 config = None
 
@@ -39,13 +39,20 @@ def do_create():
         os.mkdir(build_dir)
 
     print("Download openwrt source code...")
-    os.chdir(build_dir)
-    ret = os.system('git clone https://github.com/openwrt/openwrt -b %s %s --depth 1' %
-                    (config['version'], build_dir))
-    # if ret != 0:
-    #     raise Exception('Download openwrt failed.')
 
-    os.chdir(build_dir)
+    if os.path.exists(openwrt_dir):
+        os.chdir(openwrt_dir)
+        print("Openwrt source code already exists, try to update...")
+        os.system('git clean -fd')
+        os.system('git reset --hard')
+        os.system('git pull')
+    else:
+        ret = os.system('git clone https://github.com/openwrt/openwrt -b %s %s --depth 1' %
+                        (config['version'], openwrt_dir))
+        if ret != 0:
+            raise Exception('Download openwrt failed.')
+
+    os.chdir(openwrt_dir)
 
     # copy config file
     print("Copy config file to openwrt's source code...")
@@ -64,10 +71,11 @@ def do_create():
     if config['files'] != '':
         if os.path.exists('files'):
             os.system('rm -rf files')
-        ret = os.system('cp -rf %s files' %
-                        os.path.join(work_dir, 'openwrt', 'files', config['files']))
-        if ret != 0:
-            raise Exception("Copy root file failed")
+        for file in config['files']:
+            ret = os.system('cp -rf %s %s' % (os.path.join(work_dir, 'openwrt', 'files', config['target'], config['subtarget'], file),
+                                              os.path.join(openwrt_dir, 'files')))
+            if ret != 0:
+                raise Exception("Copy root file failed")
     else:
         print("No root file to copy.")
 
@@ -92,31 +100,32 @@ def do_create():
             os.system('rm -rf dl')
         os.system('ln -sn %s dl' % dl_dir)
 
-    # copy patches
+    # apply patches
     if config['patches'] != '':
-        print("Copy patches to openwrt's source code...")
-        patches = config['patches']
-        for patch in patches:
-            ret = os.system(
-                'cp %s %s' % (os.path.join(work_dir, "openwrt", "patches", patch), os.path.join(build_dir, patch)))
+        print("Apply patches to openwrt's source code...")
+        for patch in config['patches']:
+            ret = os.system('git apply %s' %
+                            os.path.join(work_dir, 'openwrt', 'patches', patch))
             if ret != 0:
-                raise Exception("Copy patches failed")
+                raise Exception("Apply patches failed.")
 
     print("Setup openwrt project done.")
 
 
 def do_action_hook(action):
-    os.chdir(os.path.join(work_dir, 'openwrt', 'scripts'))
+    cur_dir = os.getcwd()
+    os.chdir(openwrt_dir)
     if action != '':
         if config['action'][action] and config['action'][action] != '':
             ret = os.system(config['action'][action])
             if ret != 0:
                 raise Exception("Action %s failed." % action)
-    os.chdir(build_dir)
+    os.chdir(cur_dir)
 
 
 def do_feeds():
-    os.chdir(build_dir)
+    os.chdir(openwrt_dir)
+    print("Update feeds...")
     do_action_hook('prefeeds')
     ret = os.system('./scripts/feeds update -a')
     if ret != 0:
@@ -128,7 +137,7 @@ def do_feeds():
 
 
 def do_config():
-    os.chdir(build_dir)
+    os.chdir(openwrt_dir)
     do_action_hook('preconfig')
     ret = os.system('cp -rf %s .config' %
                     os.path.join(work_dir, 'openwrt', 'configs', config['config']))
@@ -141,7 +150,7 @@ def do_config():
 
 
 def do_download():
-    os.chdir(build_dir)
+    os.chdir(openwrt_dir)
     do_action_hook('predownload')
     ret = os.system('make download -j%d' % cpu_count())
     if ret != 0:
@@ -154,6 +163,7 @@ def do_download():
 
 def do_compile():
     print("Do compile...")
+    os.chdir(openwrt_dir)
     do_action_hook('precompile')
     ret = os.system(
         'make tools/compile -j%d || make tools/compile V=s -j1' % cpu_count())
@@ -176,6 +186,7 @@ def do_compile():
 
 def do_install():
     print("Do install...")
+    os.chdir(openwrt_dir)
     do_action_hook('preinstall')
     ret = os.system('make package/install')
     if ret != 0:
@@ -183,10 +194,13 @@ def do_install():
     ret = os.system('make target/install')
     if ret != 0:
         raise Exception("Install target failed.")
-    ret = os.system('make -j%d || make V=s -j1' % cpu_count())
-    if ret != 0:
-        raise Exception("Install failed.")
     do_action_hook('postinstall')
+    
+def do_export(args):
+    print("Do Export...")
+    os.system("mkdir -p %s" % os.path.join(work_dir, 'bin', 'targets', config['target'], config['subtarget'], config['name']))
+    os.system('cp -rf %s %s' % (os.path.join(openwrt_dir, 'bin', 'targets', config['target'], config['subtarget']), os.path.join(
+        work_dir, 'bin', 'targets', config['target'], config['subtarget'], config['name'])))
 
 
 def do_clean():
@@ -196,6 +210,12 @@ def do_clean():
     if ret != 0:
         raise Exception("Clean failed.")
     do_action_hook('postclean')
+
+def do_upload():
+    print("Do upload...")
+    do_action_hook('preupload')
+    print(os.getenv(''))
+    do_action_hook('postupload')
 
 
 if __name__ == '__main__':
@@ -227,6 +247,13 @@ if __name__ == '__main__':
 
     config = json.load(open(args.config, 'r'))
 
+    print("Build openwrt %s" % config['version'])
+
+    config_dump = json.dumps(config, indent=4)
+    print("config: ", config_dump)
+
+    openwrt_dir = os.path.join(build_dir, config['version'])
+
     try:
         if args.action == 'create':
             do_create()
@@ -242,6 +269,8 @@ if __name__ == '__main__':
             do_compile()
         elif args.action == 'install':
             do_install()
+        elif args.action == 'export':
+            do_export()
         else:
             do_create()
             do_feeds()
@@ -249,6 +278,7 @@ if __name__ == '__main__':
             do_download()
             do_compile()
             do_install()
+            do_export()
 
     except Exception as e:
         print(e)

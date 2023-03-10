@@ -1,13 +1,13 @@
 {
-    "name": "carrier_board_minimal_22-03",
-    "description": "Minimal openwrt config for Carrier Board",
+    "name": "bcm27xx_bcm2711_22_03_snapshot_minimal",
+    "description": "Minimal openwrt-22.03 snapshot config for bcm2711",
     "target": "bcm27xx",
     "subtarget": "bcm2711",
     "version": "openwrt-22.03",
-    "config": "carrier_board_minimal_22_03_deconfig",
-    "files": "carrier_board/minimal",
+    "config": "bcm27xx_bcm2711_minimal_22_03_defconfig",
+    "files": ["minimal"],
     "patches": [
-        "target/linux/bcm27xx/patches-5.10/9999-0001-lan78xx.patch"
+        "0001-lan78xx-fixed-bandwitdh-and-throughput.patch"
     ],
     "feeds": [],
     "action": {

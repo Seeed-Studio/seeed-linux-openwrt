@@ -1,4 +1,4 @@
-name: Build Carrier Board Minimal 22.03 Nightly
+name: Build X86_64_Genreic OpenWrt-22.03-snapshot Nightly
 on:
   repository_dispatch:
     types: [openwrt]
@@ -7,9 +7,11 @@ on:
     - cron: 0 9 * * 1-5
 
 env:
-  BUILD_CONFIG_FILE: carrier_board_minimal_22_03_nightly
-  TARGET: bcm27xx
-  SUBTARGET: bcm2711
+  BUILD_CONFIG_FILE: x86_64_generic_22_03_snapshot_minimal
+  TARGET: x86_64
+  SUBTARGET: generic
+  OPENWRT_VERSION: openwrt-22.03-snapshot
+  
 
 jobs:
   Build:
@@ -55,8 +57,10 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: ${{ env.BUILD_CONFIG_FILE }}
-          path: ./build/bin
-          retention-days: 1
+          path: | 
+            ./build/bin/targets/${{ env.TARGET }}/${{ env.SUBTARGET }}/
+            !./build/bin/targets/${{ env.TARGET }}/${{ env.SUBTARGET }}/packages/
+          retention-days: 7
       
   Upload:
     needs: [Build]
@@ -68,6 +72,9 @@ jobs:
         with:
           ref: "main"
           fetch-depth: 2
+      - name: Setup Environment
+        run: |
+          curl https://rclone.org/install.sh | sudo bash
 
       - name: Download Bin Folder
         uses: actions/download-artifact@main
@@ -75,14 +82,10 @@ jobs:
           name: ${{ env.BUILD_CONFIG_FILE }}
           path: ./build/bin
 
-
-      - name: Rclone Upload
+      - name: Upload Image to OneDrive
         env:
           RCLONE_PACKAGE: ${{ secrets.ONEDRIVE_NAME }}
         run: |
-          cd /home/runner/work/seeed-linux-openwrt/seeed-linux-openwrt
-          ls 
-          curl https://rclone.org/install.sh | sudo bash
           mkdir -p ~/.config/rclone/
           cat << EOF > /tmp/rclone.de
           ${{ secrets.ONEDRIVE_CONF }}
@@ -94,8 +97,7 @@ jobs:
           echo "- packages-server.zip" >> /tmp/upload-rule.txt
           echo "- *.buildinfo" >> /tmp/upload-rule.txt
           echo "+ openwrt-keyring*" >> /tmp/upload-rule.txt
-          rclone mkdir $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/${{ env.TARGET }}/${{ env.SUBTARGET }}/${{ env.BUILD_CONFIG_FILE }}
-          #rclone copy bin $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/${{ env.TARGET }}/${{ env.SUBTARGET }}/${{ env.BUILD_CONFIG_FILE }} --filter-from   /tmp/upload-rule.txt
-          rclone copy ./build/bin $RCLONE_PACKAGE:Openwrt/$(date +"%Y-%m-%d")/${{ env.TARGET }}/${{ env.SUBTARGET }}/${{ env.BUILD_CONFIG_FILE }}
-          echo "::warning file=Firmware-OneDrive::Download Link: https://1drv.ms/u/s!AqG2uRmVUhlSh0NHMLMmQKLyASvi?e=mup3cd"
+          rclone mkdir $RCLONE_PACKAGE:Openwrt/nightly/${{env.OPENWRT_VERSION}}/$(date +"%Y-%m-%d")/${{ env.TARGET }}/${{ env.SUBTARGET }}/${{ env.BUILD_CONFIG_FILE }}
+          rclone copy ./build/bin $RCLONE_PACKAGE:Openwrt/nightly/${{env.OPENWRT_VERSION}}/$(date +"%Y-%m-%d")/${{ env.TARGET }}/${{ env.SUBTARGET }}/${{ env.BUILD_CONFIG_FILE }}
+          echo "::notice file=Firmware-OneDrive::Download Link: https://1drv.ms/u/s!AqG2uRmVUhlSh0NHMLMmQKLyASvi?e=mup3cd"
           
