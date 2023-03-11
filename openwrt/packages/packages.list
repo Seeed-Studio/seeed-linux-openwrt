@@ -89,7 +89,7 @@
             "url": "https://github.com/Seeed-Studio/seeed-linux-openwrt",
             "branch": "main",
             "items": [
-                "packages"
+                "openwrt/packages"
             ]
         },
         {
