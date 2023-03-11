@@ -72,7 +72,7 @@ def do_create():
         if os.path.exists('files'):
             os.system('rm -rf files')
         for file in config['files']:
-            ret = os.system('cp -rf %s %s' % (os.path.join(work_dir, 'openwrt', 'files', config['target'], config['subtarget'], file),
+            ret = os.system('cp -rf %s %s/' % (os.path.join(work_dir, 'openwrt', 'files', config['target'], config['subtarget'], file),
                                               os.path.join(openwrt_dir, 'files')))
             if ret != 0:
                 raise Exception("Copy root file failed")
@@ -195,12 +195,14 @@ def do_install():
     if ret != 0:
         raise Exception("Install target failed.")
     do_action_hook('postinstall')
-    
+
+
 def do_export():
     print("Do Export...")
-    os.system("mkdir -p %s" % os.path.join(work_dir, 'bin', 'targets', config['target'], config['subtarget'], config['name']))
+    os.system("mkdir -p %s" % os.path.join(work_dir, 'bin',
+              config['version'], 'targets', config['target'], config['subtarget'], config['name'].split('_')[-1]))
     os.system('cp -rf %s %s' % (os.path.join(openwrt_dir, 'bin', 'targets', config['target'], config['subtarget']), os.path.join(
-        work_dir, 'bin', 'targets', config['target'], config['subtarget'], config['name'].split('_')[-1] )))
+        work_dir, 'bin', config['version'], 'targets', config['target'], config['subtarget'], config['name'].split('_')[-1])))
 
 
 def do_clean():
@@ -210,6 +212,7 @@ def do_clean():
     if ret != 0:
         raise Exception("Clean failed.")
     do_action_hook('postclean')
+
 
 def do_upload():
     print("Do upload...")
