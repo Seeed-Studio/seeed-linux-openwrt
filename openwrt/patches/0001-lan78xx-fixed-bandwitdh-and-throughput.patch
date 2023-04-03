@@ -4,15 +4,15 @@ Date: Fri, 10 Mar 2023 06:46:44 +0000
 Subject: [PATCH] lan78xx: fixed bandwitdh and throughput
 
 ---
- .../patches-5.10/9999-0001-lan78xx.patch      | 2896 +++++++++++++++++
+ .../patches-5.15/9999-0001-lan78xx.patch      | 2896 +++++++++++++++++
  1 file changed, 2896 insertions(+)
- create mode 100644 target/linux/bcm27xx/patches-5.10/9999-0001-lan78xx.patch
+ create mode 100644 target/linux/bcm27xx/patches-5.15/9999-0001-lan78xx.patch
 
-diff --git a/target/linux/bcm27xx/patches-5.10/9999-0001-lan78xx.patch b/target/linux/bcm27xx/patches-5.10/9999-0001-lan78xx.patch
+diff --git a/target/linux/bcm27xx/patches-5.15/9999-0001-lan78xx.patch b/target/linux/bcm27xx/patches-5.15/9999-0001-lan78xx.patch
 new file mode 100644
 index 0000000..b3fa826
 --- /dev/null
-+++ b/target/linux/bcm27xx/patches-5.10/9999-0001-lan78xx.patch
++++ b/target/linux/bcm27xx/patches-5.15/9999-0001-lan78xx.patch
 @@ -0,0 +1,2896 @@
 +diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
 +index 2da884e..6fc2808 100644
