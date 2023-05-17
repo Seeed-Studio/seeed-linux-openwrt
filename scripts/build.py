@@ -71,8 +71,12 @@ def do_create():
     if config['files'] != '':
         if os.path.exists('files'):
             os.system('rm -rf files')
+        
+        os.system('mkdir -p files')
         for file in config['files']:
-            ret = os.system('cp -rf %s %s/' % (os.path.join(work_dir, 'openwrt', 'files', config['target'], config['subtarget'], file),
+            print('cp -r %s %s' % (os.path.join(work_dir, 'openwrt', 'files', config['target'], config['subtarget'], file),
+                                              os.path.join(openwrt_dir, 'files')))
+            ret = os.system('cp -rv %s/* %s' % (os.path.join(work_dir, 'openwrt', 'files', config['target'], config['subtarget'], file),
                                               os.path.join(openwrt_dir, 'files')))
             if ret != 0:
                 raise Exception("Copy root file failed")
