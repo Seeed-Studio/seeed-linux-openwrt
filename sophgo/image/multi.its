@@ -1,0 +1,33 @@
+/dts-v1/;
+/ {
+	description = "CV1812H Huashan";
+	images {
+		kernel-1 {
+			data = /incbin/("./Image.lzma");
+			type = "kernel";
+			arch = "riscv";
+			os = "linux";
+			compression = "lzma";
+			load = <0x0 0x80200000>;
+			entry = <0x0 0x80200000>;
+			hash-2 {
+				algo = "crc32";
+			};
+		};
+		fdt-1 {
+			data = /incbin/("./cv1812h_wevb_0007a_emmc.dtb");
+			type = "flat_dt";
+			arch = "riscv";
+			compression = "none";
+			hash-1 {
+				algo = "sha256";
+			};
+		};
+	};
+	configurations {
+		config-cv1812h_wevb_0007a_emmc {
+			kernel = "kernel-1";
+			fdt = "fdt-1";
+		};
+	};
+};
