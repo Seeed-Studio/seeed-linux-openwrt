@@ -3,7 +3,7 @@
 	description = "CV1812H Huashan";
 	images {
 		kernel-1 {
-			data = /incbin/("./Image.lzma");
+			data = /incbin/("${images_dir}/Image.lzma");
 			type = "kernel";
 			arch = "riscv";
 			os = "linux";
@@ -15,7 +15,7 @@
 			};
 		};
 		fdt-1 {
-			data = /incbin/("./cv1812h_wevb_0007a_emmc.dtb");
+			data = /incbin/("${images_dir}/${dts_name}");
 			type = "flat_dt";
 			arch = "riscv";
 			compression = "none";

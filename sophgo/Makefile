@@ -6,14 +6,20 @@ include $(TOPDIR)/rules.mk
 
 ARCH:=riscv64
 BOARD:=sophgo
-BOARDNAME:=Sophgo U-based RISC-V boards....
+BOARDNAME:=Sophgo U-based RISC-V
 FEATURES:=ext4
 KERNELNAME:=Image dtbs
-SUBTARGETS:=huashan
+SUBTARGETS:=cv180x cv181x
 
 KERNEL_PATCHVER:=5.15
 
+
 include $(INCLUDE_DIR)/target.mk
+
+# TARGET_LDFLAGS += -L$(STAGING_DIR)/usr/lib
+# TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include
+# $(warning print....................... TARGET_CFLAGS: $(TARGET_CFLAGS))
+
 
 DEFAULT_PACKAGES += u-boot-cvitek_cv1812h_wevb_0007a_emmc_huashan
 define Target/Description

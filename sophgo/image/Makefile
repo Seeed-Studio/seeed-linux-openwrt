@@ -3,47 +3,56 @@
 include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/image.mk
 
-define Image/BuildKernel
-	cp $(KDIR)/Image $(BIN_DIR)/Image
-	cp $(DTS_DIR)/$(DTSDIR)/$(DTSNAME).dtb $(BIN_DIR)/$(DTSNAME).dtb
+include $(SUBTARGET).mk
+
+
+define Image/Prepare
+	$(warning print....................... Image/Prepare: ${SUBTARGET} $$(DEVICE_DTS)  $(STAGING_DIR_IMAGE) )
+	mkdir -p $(STAGING_DIR_IMAGE)
+	cp ${PWD}/image/multi.its ${STAGING_DIR_IMAGE}/multi.its
+	sed -i "s=\$$$${images_dir}=$(STAGING_DIR_IMAGE)=" ${STAGING_DIR_IMAGE}/multi.its
+	sed -i "s=\$$$${dts_name}=$$(DEVICE_DTS).dtb=" ${STAGING_DIR_IMAGE}/multi.its
 endef
 
-define Image/Build/Initramfs
-	cp $(KDIR)/Image-initramfs $(BIN_DIR)/$(IMG_PREFIX)-Image-initramfs
+
+define Image/BuildKernel
+	echo $(TARGET_LDFLAGS)
+	cp $(KDIR)/Image $(STAGING_DIR_IMAGE)/Image
+	# cp $(DTS_DIR)/$(DTSDIR)/$$$(DEVICE_DTS).dtb $(STAGING_DIR_IMAGE)/$$(DEVICE_DTS).dtb
+	cp $(KDIR)/image-$$(DEVICE_DTS).dtb $(STAGING_DIR_IMAGE)/$$(DEVICE_DTS).dtb
 endef
 
 
 define Image/Build/gzip
-	gzip -f9n $(BIN_DIR)/$(IMG_ROOTFS)-$(1).img
+	gzip -f9n $(STAGING_DIR_IMAGE)/$(IMG_ROOTFS)-$(1).img
 endef
 
 $(eval $(call Image/gzip-ext4-padded-squashfs))
 
 define Image/Build
 	$(call Image/Build/$(1))
-
-	python3 ${PWD}/image/fiptool.py -v genfip $(BIN_DIR)/fip.bin \
+	python3 ${PWD}/image/fiptool.py -v genfip $(STAGING_DIR_IMAGE)/fip.bin \
 	--MONITOR_RUNADDR=0x80000000 \
-	--CHIP_CONF=${PWD}/image/input/chip_conf.bin \
+	--CHIP_CONF=${PWD}/image/firmware/${SUBTARGET}/chip_conf.bin \
 	--NOR_INFO=FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF \
 	--NAND_INFO=00000000 \
-	--BL2=${PWD}/image/input/bl2.bin \
+	--BL2=${PWD}/image/firmware/${SUBTARGET}/bl2.bin \
 	--BLCP_IMG_RUNADDR=0x05200200 \
 	--BLCP_PARAM_LOADADDR=0 \
-	--DDR_PARAM=${PWD}/image/input/ddr_param.bin \
-	--MONITOR=${PWD}/image/input/fw_dynamic.bin \
-	--LOADER_2ND=$(BIN_DIR)/u-boot.bin
+	--DDR_PARAM=${PWD}/image/firmware/${SUBTARGET}/ddr_param.bin \
+	--MONITOR=${PWD}/image/firmware/${SUBTARGET}/fw_dynamic.bin \
+	--LOADER_2ND=$(STAGING_DIR_IMAGE)/u-boot.bin
 
-	cp ${PWD}/image/multi.its ${BIN_DIR}/multi.its
-	lzma e $(BIN_DIR)/Image $(BIN_DIR)/Image.lzma
+	lzma e $(STAGING_DIR_IMAGE)/Image $(STAGING_DIR_IMAGE)/Image.lzma
 
 
-	mkimage -f ${BIN_DIR}/multi.its ${BIN_DIR}/boot.sd
+	mkimage -f ${STAGING_DIR_IMAGE}/multi.its ${STAGING_DIR_IMAGE}/boot.sd
 	# ${PWD}/image/genimage.sh -c  ${PWD}/image/genimage.cfg
 
-	genimage --rootpath $(call mkfs_target_dir,$(1)) --inputpath $(BIN_DIR) --outputpath $(BIN_DIR) --config ${PWD}/image/genimage.cfg
+	genimage --rootpath $(call mkfs_target_dir,$(1)) --inputpath $(STAGING_DIR_IMAGE) --outputpath $(BIN_DIR) --config ${PWD}/image/genimage.cfg
 	rm -rf ${PWD}/image/tmp || true
 endef
+
 
 
 $(eval $(call BuildImage))
