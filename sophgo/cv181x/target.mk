@@ -6,6 +6,7 @@ SUBTARGET:=cv181x
 BOARDNAME:=cv181x based boards
 DTSDIR:=cvitek
 
+DEVICE_PACKAGES := u-boot-huashanpi
 
 
 define Target/Description

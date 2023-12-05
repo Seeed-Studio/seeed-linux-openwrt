@@ -11,11 +11,24 @@ PKG_VERSION:=2021.10
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL=http://192.168.1.77:1080/baozhu/uboot-sophgo
-PKG_SOURCE_VERSION:=c5d4e427ae3ab736c3d72043715b9a990b07d1c9
-PKG_MIRROR_HASH=857f84db3f8ae47d7441c863c496d61611dcf94460726557517bd887bdfbe6a4
+PKG_SOURCE_VERSION:=3779bc1103f01422107e936b3e8cc099ab353763
+PKG_MIRROR_HASH=c4409eea747f63e7234cc53bd77a4ae343d73493fd4fe1c840d7f51862868ba7
 
 include $(INCLUDE_DIR)/u-boot.mk
 include $(INCLUDE_DIR)/package.mk
+
+
+define Build/Prepare
+    $(call Build/Prepare/Default)
+	$(warning print....................... Build/Prepare: ${SUBTARGET} $$(DEVICE_DTS)  $(STAGING_DIR_IMAGE) )
+	cp files/$(SUBTARGET)/$(BUILD_DEVICES)_defconfig $(PKG_BUILD_DIR)/configs/$(BUILD_VARIANT)_defconfig
+	cp files/$(SUBTARGET)/dts/*.dts $(PKG_BUILD_DIR)/arch/riscv/dts/
+	cp files/$(SUBTARGET)/dts/*.dtsi $(PKG_BUILD_DIR)/arch/riscv/dts/
+	cp files/$(SUBTARGET)/dts/cvi_board_memmap.h $(PKG_BUILD_DIR)/arch/riscv/dts/
+	cp files/$(SUBTARGET)/cvitek.h $(PKG_BUILD_DIR)/include/cvitek/
+	cp files/$(SUBTARGET)/cvi_board_init.c $(PKG_BUILD_DIR)/board/cvitek
+endef
+
 
 define U-Boot/Default
 	BUILD_TARGET:=sophgo
@@ -27,21 +40,35 @@ endef
 
 # sophgo boards
 
-define U-Boot/sophgo
-	NAME:=Sophgo huashan
+define U-Boot/huashanpi
+	NAME:=Sophgo huashan pi
 	UBOOT_DTS:=cv1812h_wevb_0007a_emmc.dtb
 	BUILD_DEVICES:=cvitek_cv1812h_wevb_0007a_emmc
+	UBOOT_MAKE_FLAGS := \
+		CHIP=cv1812h \
+		CVIBOARD=wevb_0007a_emmc \
+		BOARD=cv181x \
+		CHIP_SEGMENT=cv181x
+endef
+
+define U-Boot/milkvduo
+	NAME:=Sophgo milk-v duo
+	UBOOT_DTS:=cv1800b_milkv_duo_sd.dtb
+	BUILD_DEVICES:=cvitek_cv1800b_milkv_duo_sd
+	UBOOT_MAKE_FLAGS := \
+		CHIP=cv1800b \
+		CVIBOARD=milkv_duo_sd \
+		BOARD=cv180x \
+		CHIP_SEGMENT=cv180x
 endef
 
 
-UBOOT_TARGETS := \
-	cvitek_cv1812h_wevb_0007a_emmc 
 
-#for dtb-$(CONFIG_TARGET_CVITEK) += $(CHIP)_$(CVIBOARD).dtb
-UBOOT_MAKE_FLAGS += \
-  CHIP=cv1812h \
-  BOARD=cv181x \
-  CVIBOARD=wevb_0007a_emmc 
+UBOOT_TARGETS := \
+	huashanpi \
+	milkvduo
+
+
 
 
 define Build/InstallDev

@@ -7,6 +7,7 @@
 define Device/milk-v-duo
   DEVICE_VENDOR := milkv.io
   DEVICE_MODEL := milkv-duo
+  DEVICE_DTS_DIR := ${PWD}/cv180x/dts
   DEVICE_DTS := cv1800b_milkv_duo_sd
 endef
 TARGET_DEVICES += milk-v-duo

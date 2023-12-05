@@ -8,7 +8,7 @@ ARCH:=riscv64
 BOARD:=sophgo
 BOARDNAME:=Sophgo U-based RISC-V
 FEATURES:=ext4
-KERNELNAME:=Image dtbs
+KERNELNAME:=Image
 SUBTARGETS:=cv180x cv181x
 
 KERNEL_PATCHVER:=5.15
@@ -21,9 +21,13 @@ include $(INCLUDE_DIR)/target.mk
 # $(warning print....................... TARGET_CFLAGS: $(TARGET_CFLAGS))
 
 
-DEFAULT_PACKAGES += u-boot-cvitek_cv1812h_wevb_0007a_emmc_huashan
 define Target/Description
 	Build firmware images for the Sophgo U-based boards
 endef
 
 $(eval $(call BuildTarget))
+
+
+#todo 
+#1, U-boot中集成cv1800b的代码，修改为cv1812h的代码
+#2, 测试cv1812的镜像

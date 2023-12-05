@@ -25,7 +25,7 @@
 		};
 	};
 	configurations {
-		config-cv1812h_wevb_0007a_emmc {
+		config-cv18xx-openwrt {
 			kernel = "kernel-1";
 			fdt = "fdt-1";
 		};

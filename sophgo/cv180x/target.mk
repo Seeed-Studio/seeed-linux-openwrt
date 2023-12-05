@@ -5,6 +5,7 @@
 SUBTARGET:=cv180x
 BOARDNAME:=cv180x based boards
 DTSDIR:=cvitek
+DEVICE_PACKAGES := u-boot-milkvduo
 
 
 
