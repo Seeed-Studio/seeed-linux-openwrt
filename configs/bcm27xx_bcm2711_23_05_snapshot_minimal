@@ -1,0 +1,23 @@
+{
+    "name": "bcm27xx_bcm2711_23_05_snapshot_minimal",
+    "description": "Minimal openwrt v23.05 snapshot config for bcm2711",
+    "target": "bcm27xx",
+    "subtarget": "bcm2711",
+    "version": "openwrt-23.05",
+    "config": "bcm27xx_bcm2711_minimal_23_05_defconfig",
+    "files": ["minimal"],
+    "patches": [],
+    "feeds": [],
+    "action": {
+        "prefeeds": null,
+        "postfeeds": null,
+        "preconfig": null,
+        "postconfig": null,
+        "predownload": null,
+        "postdownload": null,
+        "precompile": null,
+        "postcompile": null,
+        "preinstall": null,
+        "postinstall": null
+    }
+}

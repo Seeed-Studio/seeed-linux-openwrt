@@ -1,4 +1,4 @@
-name: Build BCM2711 Minimal OpenWrt-22.03-snapshot 
+name: Build BCM2711 Minimal OpenWrt-23.05-snapshot 
 on:
   repository_dispatch:
     types: [openwrt]
@@ -7,10 +7,10 @@ on:
     - cron: 0 9 * * 1-5
 
 env:
-  BUILD_CONFIG_FILE: bcm27xx_bcm2711_22_03_snapshot_minimal
+  BUILD_CONFIG_FILE: bcm27xx_bcm2711_23_05_snapshot_minimal
   TARGET: bcm27xx
   SUBTARGET: bcm2711
-  OPENWRT_VERSION: openwrt-22.03
+  OPENWRT_VERSION: openwrt-23.05
   TYPE: minimal
   
 
