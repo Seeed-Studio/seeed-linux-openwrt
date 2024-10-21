@@ -72,6 +72,6 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_DNSPROXY
 	default n
 endef
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

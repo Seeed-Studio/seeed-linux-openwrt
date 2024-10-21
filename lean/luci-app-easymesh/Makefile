@@ -12,6 +12,6 @@ PKG_NAME:=luci-app-easymesh
 PKG_VERSION:=2.0
 PKG_RELEASE:=1
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

@@ -36,7 +36,7 @@ GO_PKG_LDFLAGS_X:= \
 	main.BuildHost=openwrt
 
 include $(INCLUDE_DIR)/package.mk
-include ../../lang/golang/golang-package.mk
+include $(TOPDIR)/feeds/packages/lang/golang/golang-package.mk
 
 define Package/rclone/Default
   SECTION:=net

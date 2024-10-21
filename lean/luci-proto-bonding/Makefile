@@ -13,6 +13,6 @@ LUCI_PKGARCH:=all
 
 PKG_MAINTAINER:=Helge Mader <ma@dev.tdt.de>
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature
