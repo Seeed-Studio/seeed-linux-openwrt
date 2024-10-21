@@ -1,0 +1,206 @@
+{
+    "repo": "https://github.com/Seeed-Studio/seeed-linux-openwrt",
+    "branch": "packages",
+    "packages": [
+        {
+            "name": "luci-app-diskman",
+            "author": "lisaac",
+            "url": "https://github.com/lisaac/luci-app-diskman",
+            "branch": "master",
+            "items": [
+               "*"
+            ]
+        },
+        {
+            "name": "luci-app-dockerman",
+            "author": "lisaac",
+            "url": "https://github.com/lisaac/luci-app-dockerman",
+            "branch": "master",
+            "items": [
+               "*"
+            ]
+        },
+        {
+            "name": "luci-lib-docker",
+            "author": "lisaac",
+            "url": "https://github.com/lisaac/luci-lib-docker",
+            "branch": "master",
+            "items": [
+               "*"
+            ]
+        },
+        {
+            "name": "luci-app-UUGameAcc",
+            "author": "BCYDTZ",
+            "url": "https://github.com/BCYDTZ/luci-app-UUGameAcc",
+            "branch": "master",
+            "items": [
+               "*"
+            ]
+        },
+        {
+            "name": "luci-app-LingTiGameAcc",
+            "author": "esirplayground",
+            "url": "https://github.com/esirplayground/luci-app-LingTiGameAcc",
+            "branch": "master",
+            "items": [
+               "*"
+            ]
+        },
+        {
+            "name": "LingTiGameAcc",
+            "author": "esirplayground",
+            "url": "https://github.com/esirplayground/LingTiGameAcc",
+            "branch": "master",
+            "items": [
+               "*"
+            ]
+        },
+        {
+            "name": "luci-app-webadmin",
+            "author": "awesome-openwrt",
+            "url": "https://github.com/awesome-openwrt/luci-app-webadmin",
+            "branch": "master",
+            "items": [
+               "*"
+            ]
+        },
+        {
+            "name": "luci-theme-argon",
+            "author": "jerrykuku",
+            "url": "https://github.com/jerrykuku/luci-theme-argon",
+            "branch": "master",
+            "items": [
+                "*"
+            ]
+        },
+        {
+            "name": "luci-app-argon-config",
+            "author": "jerrykuku",
+            "url": "https://github.com/jerrykuku/luci-app-argon-config",
+            "branch": "master",
+            "items": [
+                "*"
+            ]
+        },
+        {
+            "name": "packages",
+            "author": "seeed",
+            "url": "https://github.com/Seeed-Studio/seeed-linux-openwrt",
+            "branch": "main",
+            "items": [
+                "openwrt/packages"
+            ]
+        },
+        {
+            "name": "lede",
+            "author": "lean",
+            "url": "https://github.com/coolsnowwolf/lede",
+            "branch": "master",
+            "items": [
+                "LICENSES",
+                "package/lean/adbyby",
+                "package/lean/autocore",
+                "package/lean/autosamba",
+                "package/lean/csstidy",
+                "package/lean/ddns-scripts_aliyun",
+                "package/lean/ddns-scripts_dnspod",
+                "package/lean/dsmboot",
+                "package/lean/ipv6-helper",
+                "package/lean/k3-brcmfmac4366c-firmware",
+                "package/lean/k3screenctrl",
+                "package/lean/libcryptopp",
+                "package/lean/mentohust",
+                "package/lean/microsocks",
+                "package/lean/mt",
+                "package/lean/n2n_v2",
+                "package/lean/polarssl",
+                "package/lean/ps3netsrv",
+                "package/lean/r8125",
+                "package/lean/r8152",
+                "package/lean/rclone",
+                "package/lean/shortcut-fe",
+                "package/lean/srelay",
+                "package/lean/wol",
+                "package/lean/wxbase"
+            ]
+        },
+        {
+            "name": "luci",
+            "author": "lean",
+            "url": "https://github.com/coolsnowwolf/luci",
+            "branch": "master",
+            "items": [
+                "applications/luci-app-accesscontrol",
+                "applications/luci-app-adbyby-plus",
+                "applications/luci-app-amule",
+                "applications/luci-app-arpbind",
+                "applications/luci-app-autoreboot",
+                "applications/luci-app-cifsd",
+                "applications/luci-app-cpufreq",
+                "applications/luci-app-dnsforwarder",
+                "applications/luci-app-easymesh",
+                "applications/luci-app-familycloud",
+                "applications/luci-app-fileassistant",
+                "applications/luci-app-filetransfer",
+                "applications/luci-app-guest-wifi",
+                "applications/luci-app-haproxy-tcp",
+                "applications/luci-app-ipsec-vpnd",
+                "applications/luci-app-jd-dailybonus",
+                "applications/luci-app-kodexplorer",
+                "applications/luci-app-mwan3helper",
+                "applications/luci-app-n2n_v2",
+                "applications/luci-app-netdata",
+                "applications/luci-app-nfs",
+                "applications/luci-app-pppoe-relay",
+                "applications/luci-app-pptp-server",
+                "applications/luci-app-ps3netsrv",
+                "applications/luci-app-qbittorrent",
+                "applications/luci-app-ramfree",
+                "applications/luci-app-rclone",
+                "applications/luci-app-softethervpn",
+                "applications/luci-app-ssrserver-python",
+                "applications/luci-app-turboacc",
+                "applications/luci-app-usb-printer",
+                "applications/luci-app-uugamebooster",
+                "applications/luci-app-v2ray-server",
+                "applications/luci-app-verysync",
+                "applications/luci-app-vlmcsd",
+                "applications/luci-app-wrtbwmon",
+                "applications/luci-app-xlnetacc",
+                "libs/luci-lib-fs",
+                "protocols/luci-proto-bonding"
+            ]
+        },
+        {
+            "name": "packages",
+            "author": "lean",
+            "url": "https://github.com/coolsnowwolf/packages",
+            "branch": "master",
+            "items": [
+                "multimedia/gmediarender",
+                "net/amule",
+                "net/dns2socks",
+                "net/dnsforwarder",
+                "net/dnsproxy",
+                "net/ipt2socks",
+                "net/microsocks",
+                "net/pdnsd-alt",
+                "net/polarssl",
+                "net/qBittorrent-static",
+                "net/qBittorrent",
+                "net/rclone-ng",
+                "net/rclone-webui-react",
+                "net/rclone",
+                "net/tcpping",
+                "net/uugamebooster",
+                "net/verysync",
+                "net/vlmcsd",
+                "libs/qtbase",
+                "libs/qttools",
+                "libs/rblibtorrent",
+                "libs/wxbase"
+            ]
+        }
+    ]
+}

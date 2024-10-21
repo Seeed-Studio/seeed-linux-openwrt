@@ -1,0 +1,43 @@
+#!/bin/sh
+
+# parse commandline options
+while [ ! -z "$1" ]; do
+	case $1 in
+	--start)
+
+		pid=`pidof node-red`
+		if [ -z "$pid" ]; then
+			if [ ! -z $2 ]; then
+				/usr/bin/node-red --port $2 &
+			else
+				/usr/bin/node-red &
+			fi
+		else
+			echo "node-red started..."
+		fi
+
+		;;
+	--state)
+
+		pid=`pidof node-red`
+		if [ ! -z "$pid" ]; then
+			echo "node-red started..."
+		else
+			echo "node-red stopped..."
+		fi
+
+		;;
+	--stop)
+		pid=`pidof node-red`
+
+		if [ ! ["" == "$pid"] ]; then
+			kill -9 $pid
+		else
+			echo "node-red stopped..."
+		fi
+		;;
+
+	esac
+
+	shift
+done
