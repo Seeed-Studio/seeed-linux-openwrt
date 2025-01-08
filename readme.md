@@ -1,3 +1,6 @@
+# *EOL warning, this software is already EOL, please use the latest OpenWRT according to the wiki.*
+***https://wiki.seeedstudio.com/OpenWrt-Getting-Started/#run-r235-openwrt***
+
 # Welcome to Seeed's Openwrt.
 
   Seeed Openwrt is a great way to add some great Luci applications to the latest version of Openwrt. Our goal is to provide a stable, flexible and easy to use Openwrt system for CM4 and x86 based hardware devices. Seeed's Openwrt system provides not only basic routing functions, but also platform software for HomeLab, AIoT, allowing users to quickly implement different scenarios.
